@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>{{PERSON_NAME}} — Resume</title>
+<title>{{PERSON_NAME}} Resume</title>
 <style>
 /* resume-build inlines the full contents of theme.css here, verbatim.
    Do not restyle per resume. Edit templates/theme.css instead. */
@@ -23,13 +23,16 @@
 
   <!-- ============ EXPERIENCE ============
        Repeat one .entry block per selected experience, most
-       recent first. Omit .entry-loc if there's no location. -->
+       recent first. Omit .entry-loc if there's no location.
+       Dates render human-readably on the page ("Mar 2021 to Aug 2023"),
+       not in career.yaml's storage format ("2021-03"). Use "present"
+       for a current role. -->
   <h2>Experience</h2>
 
   <div class="entry">
     <div class="entry-head">
-      <div><span class="entry-title">{{TITLE}}</span> <span class="entry-org">— {{COMPANY}}</span></div>
-      <div class="entry-dates">{{START}} – {{END}}</div>
+      <div><span class="entry-title">{{TITLE}}</span> <span class="entry-org">· {{COMPANY}}</span></div>
+      <div class="entry-dates">{{START}} to {{END}}</div>
     </div>
     <div class="entry-loc">{{LOCATION}}</div>
     <ul class="bullets">
@@ -44,8 +47,8 @@
 
   <div class="entry">
     <div class="entry-head">
-      <div><span class="entry-title">{{DEGREE}}</span> <span class="entry-org">— {{INSTITUTION}}</span></div>
-      <div class="entry-dates">{{START}} – {{END}}</div>
+      <div><span class="entry-title">{{DEGREE}}</span> <span class="entry-org">· {{INSTITUTION}}</span></div>
+      <div class="entry-dates">{{START}} to {{END}}</div>
     </div>
   </div>
 

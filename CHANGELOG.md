@@ -1,5 +1,45 @@
 # Changelog
 
+## 2026-08-17 13:45 - Reframed from resume generator to career folder: schema v2, interview loop, and a coaching layer
+The tool treated ingestion as the main event, which capped it at reformatting whatever
+a previous resume already said. Reframed around the durable asset: a career record that
+grows over years through conversation, with a resume as one rendered view of it.
+
+Schema v2 adds an `evidence_type` on every claim (`documented`, `self-reported`,
+`self-assessment`, `derived`) with a rule that evidence is never promoted without a new
+source document. This is the integrity mechanism: a metric from a performance review and
+"I'm good at stakeholder management" are different kinds of data, and only the first two
+tiers may ever be printed on a resume. Self-assessment shapes emphasis and wording but
+is never stated as a claim about the person. Also added per-role `context` (scope, team
+size, whether the work was unprompted) and `reflections` pointing at markdown files,
+since multi-paragraph prose in YAML is unreadable and unedittable.
+
+Two new skills. `career-enrich` is the interview loop: it reads the record, reports
+honestly which roles are thin, asks three to five targeted questions from a new
+interview bank, captures free-form rambles as markdown reflections in the person's own
+words, and extracts structured data back with correct evidence types. `career-target` is
+the coach: it positions the person for a specific role, gives a plain gap analysis that
+distinguishes hard gaps from soft ones, writes concrete tips with a named action and a
+linkable artifact rather than advice like "learn Kubernetes", and returns a real
+apply-or-not recommendation. It also reads every past brief in `03_target/output/`, so a
+requirement that keeps recurring across applications gets named as a ceiling instead of
+a one-off miss. It requires 3 past targets before claiming a pattern.
+
+`resume-ingest` became `career-ingest` (it takes performance reviews, offer letters, and
+LinkedIn exports, not just resumes), now classifies and reports skipped files by name
+rather than silently swallowing the junk users drop in, and never deletes an original.
+Deliverable folders gained a date prefix. Also fixed em dashes that were rendering onto
+the resume itself: the title/company separator is now a middot matching the contact
+line, and dates print human-readably ("Mar 2021 to present") instead of in career.yaml's
+storage format. Verified: fresh scaffold produces the v2 starter with self_assessment and
+a reflections shelf, the config guard still holds, end-to-end render is clean at one page,
+and no file references the old flat paths or undated deliverable folders.
+Files: schema/career-schema.md, schema/interview-bank.md, skills/career-enrich/SKILL.md,
+skills/career-target/SKILL.md, skills/career-ingest/SKILL.md, skills/resume-build/SKILL.md,
+skills/resume-kit-init/SKILL.md, skills/resume-kit-init/scripts/init.sh, README.md,
+templates/resume-template.html, templates/README.md, examples/career.example.yaml,
+examples/sample-ramble.md.
+
 ## 2026-08-17 12:52 - Data directory restructured as an ICM workspace, plus a config-clobbering fix
 The data directory was a flat folder (career.yaml, inbox/, output/), which meant the
 only way to use the tool was to name a skill: an agent landing in the folder cold had

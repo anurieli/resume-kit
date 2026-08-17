@@ -50,12 +50,13 @@ write_if_absent() {
 mkdir -p \
   "$DATA_DIR/_config" \
   "$DATA_DIR/01_intake/output/processed" \
+  "$DATA_DIR/02_career-db/self/reflections" \
   "$DATA_DIR/02_career-db/output" \
   "$DATA_DIR/03_target/output" \
   "$DATA_DIR/04_deliverable/output" \
   "$CONFIG_DIR"
 
-for d in 01_intake/output 01_intake/output/processed 02_career-db/output 03_target/output 04_deliverable/output; do
+for d in 01_intake/output 01_intake/output/processed 02_career-db/self/reflections 02_career-db/output 03_target/output 04_deliverable/output; do
   [[ -e "$DATA_DIR/$d/.gitkeep" ]] || touch "$DATA_DIR/$d/.gitkeep"
 done
 
@@ -84,38 +85,60 @@ identity_body() {
   cat <<'EOF'
 # resume-kit workspace
 
-A career database and a tailored resume builder, run as an ICM pipeline.
-The filesystem is the runtime: each numbered folder is one stage, each
-stage's `CONTEXT.md` is its contract, and every intermediate is a file you
-can open and edit.
+A career folder that produces resumes. The durable asset is the record of
+one person's working life; a resume is one view of it, rendered for one
+company. The record is meant to grow over years.
 
-This directory holds the private half of resume-kit: real career data,
-real job postings, real resumes. The tool itself (skills, schema, PDF
-template) lives separately at `@@REPO_DIR@@` and is meant to be public.
-Nothing personal belongs there.
+Run as an ICM pipeline: the filesystem is the runtime, each numbered folder
+is one stage, each stage's `CONTEXT.md` is its contract, and every
+intermediate is a file you can open and edit.
 
-Owner: whoever runs this workspace. One person, one career database.
+This directory holds the private half of resume-kit: real career data, real
+job postings, real resumes. The tool itself (skills, schema, PDF template)
+lives separately at `@@REPO_DIR@@` and is meant to be public. Nothing
+personal belongs there.
+
+Owner: whoever runs this workspace. One person, one career record.
 
 ## Layout
 
 ```
-IDENTITY.md        you are here. Layer 0.
-CONTEXT.md         Layer 1: routing. Which stage handles what.
-_config/           Layer 3: stable reference (schema rules, output format).
-01_intake/         raw material lands here.
-02_career-db/      career.yaml, the durable database.
-03_target/         one job posting, captured and briefed.
-04_deliverable/    the tailored resume, HTML and PDF.
+IDENTITY.md              you are here. Layer 0.
+CONTEXT.md               Layer 1: routing. Which stage handles what.
+_config/                 Layer 3: stable reference (schema rules, output format).
+01_intake/               raw documents land here.
+02_career-db/
+  career.yaml            the structured spine.
+  self/reflections/      long-form rambles, referenced from career.yaml.
+  output/                ingest and enrich reports.
+03_target/output/<slug>/ posting.md, brief.md.
+04_deliverable/output/<YYYY-MM-DD>-<slug>/
+                         positioning.md, resume.html, resume.pdf.
 ```
 
-Stages 01 and 02 grow the database over years. Stages 03 and 04 run once
-per application and leave a folder behind per job.
+Stages 01 and 02 grow the record over years. Stages 03 and 04 run once per
+application and leave a dated folder behind per job.
+
+## The loop
+
+1. **Ingest to bootstrap.** `career-ingest` reads documents you already
+   have and gets titles, dates, and old bullets into `career.yaml`. This is
+   the start, not the point. It produces a thin record.
+2. **Enrich over time.** `career-enrich` interviews you, captures rambles as
+   reflections, and fills in scope, numbers, initiative, and what you are
+   actually good at. This is what makes the record worth having, and it
+   never really finishes.
+3. **Target a role.** `career-target` reads a posting against the record and
+   gives you positioning, honest gaps, concrete tips, and a real answer on
+   whether to apply. You can stop here.
+4. **Build the resume.** `resume-build` renders the selected material into
+   the fixed format.
 
 ## Two ways to run a stage
 
-1. **Call a skill.** `resume-ingest` walks 01 into 02. `resume-build`
-   walks 03 into 04. Both read `~/.config/resume-kit/config.yaml` to find
-   this directory.
+1. **Call a skill.** `career-ingest`, `career-enrich`, `career-target`,
+   `resume-build`. All read `~/.config/resume-kit/config.yaml` to find this
+   directory.
 2. **Drop a file into a stage folder** and ask an agent to continue. It
    reads that stage's `CONTEXT.md` and follows the contract. Same result,
    no skill call needed.
@@ -135,12 +158,19 @@ contract disagree, that is a bug: fix both in the same change.
 
 ## Rules that hold across every stage
 
-- Never fabricate. Every fact in `career.yaml` carries a `source:`.
+- Never fabricate. Every claim in `career.yaml` carries an `evidence_type`
+  and a `source:`.
+- Never promote evidence. A `self-assessment` does not become
+  `self-reported` because it sounds confident. Promotion needs a document.
+- Only `documented` and `self-reported` material may be printed on a
+  resume. `self-assessment` shapes emphasis and wording. `derived` is
+  internal.
 - Ask when ambiguous rather than guessing, and batch the questions.
+- Long-form prose goes to `02_career-db/self/reflections/`, not into YAML.
 - Content is tailored per job. Format never is: `theme.css` is inlined
   verbatim into every resume.
-- `career.yaml` is the only durable artifact here. Everything under an
-  `output/` folder is reproducible from it plus a job posting.
+- `career.yaml` plus `self/reflections/` is the durable asset here.
+  Everything under an `output/` folder is reproducible from it.
 EOF
 }
 
@@ -161,28 +191,37 @@ fi
 write_if_absent "$DATA_DIR/CONTEXT.md" <<'EOF'
 # Routing
 
-| You have | Stage | Output |
-|---|---|---|
-| An old resume, LinkedIn export, cover letter, past posting | `01_intake/` | file consumed, moved to `01_intake/output/processed/` |
-| Intake material just consumed | `02_career-db/` | updated `career.yaml` plus an ingest report |
-| A job posting (pasted text, URL, or file) | `03_target/` | `output/<slug>/posting.md` and `brief.md` |
-| A captured target plus a filled `career.yaml` | `04_deliverable/` | `output/<slug>/resume.html` and `resume.pdf` |
+A career folder that produces resumes. The record is the asset; a resume is
+one view of it.
+
+| You have | Stage | Skill | Output |
+|---|---|---|---|
+| Old resumes, LinkedIn export, performance reviews, offer letters | `01_intake/` | `career-ingest` | files consumed into `01_intake/output/processed/` |
+| Documents just consumed, or something to say about a job | `02_career-db/` | `career-ingest`, `career-enrich` | updated `career.yaml`, reflections, a run report |
+| A job posting, and the question of whether to apply | `03_target/` | `career-target` | `output/<slug>/posting.md` and `brief.md` |
+| A captured target plus a filled `career.yaml` | `04_deliverable/` | `career-target`, `resume-build` | `output/<YYYY-MM-DD>-<slug>/positioning.md`, `resume.html`, `resume.pdf` |
 
 Two activation paths, same contracts:
 
-- **Call a skill.** `resume-ingest` runs 01 into 02. `resume-build` runs 03
-  into 04.
+- **Call a skill.**
 - **Drop a file into a stage folder** and ask an agent to continue. It reads
   that stage's `CONTEXT.md`.
 
 Passes:
 
-- **Ingest pass:** 01 then 02. Run it whenever new material shows up.
-- **Application pass:** 03 then 04. Run it once per job. It needs `02` filled
-  but does not need a fresh `01`.
+- **Bootstrap pass:** 01 then 02, via `career-ingest`. Run it whenever new
+  documents show up. It produces a thin record on purpose.
+- **Enrichment pass:** 02 only, via `career-enrich`. The interview loop.
+  Run it repeatedly over months. This is what makes the record good.
+- **Application pass:** 03 then 04, via `career-target` then `resume-build`.
+  Run it once per job. It needs 02 filled but not a fresh 01. Stopping after
+  `career-target` is a legitimate outcome: deciding not to apply is an
+  answer.
 
-`<slug>` is `<company>-<role>`, lowercase and hyphenated, and it is the same
-string in 03 and 04. Do not rename it between stages.
+`<slug>` is `<company>-<role>`, lowercase and hyphenated, the same string in
+03 and 04. Do not rename it between stages. The 04 folder additionally
+carries a `<YYYY-MM-DD>-` prefix, so applying to the same company twice
+leaves two folders rather than overwriting the first.
 
 New here? Read `IDENTITY.md` first.
 EOF
@@ -190,32 +229,54 @@ EOF
 # ---------------------------------------------------------------- Layer 3
 
 write_if_absent "$DATA_DIR/_config/schema.md" <<'EOF'
-# career.yaml schema
+# career.yaml schema (v2)
 
 Full schema: `@@REPO_DIR@@/schema/career-schema.md`. Read it before writing
 to `02_career-db/career.yaml`. Summary of the shape and the hard rules:
 
 **Shape.** Top-level keys: `person`, `experiences`, `education`, `projects`,
-`certifications`, `skills`, `meta`. An experience carries a stable `id`,
-`company`, `title`, `location`, `start`, `end` (`YYYY-MM` or `present`),
-`tags`, and a list of `achievements`, each with `text`, `tags`, an optional
-`metric`, and a `source`.
+`certifications`, `skills`, `self_assessment`, `meta`. An experience carries
+a stable `id`, `company`, `title`, `location`, `start`, `end` (`YYYY-MM` or
+`present`), `tags`, a list of `achievements` (each with `text`, `tags`, an
+optional `metric`, an `evidence_type`, and a `source`), plus optional
+`context:` (team size, scope, whether the work was `unprompted`, `assigned`,
+or `inherited`) and `reflections:` (paths to markdown under
+`self/reflections/`).
+
+**The evidence rule, which governs everything else.** Every claim carries an
+`evidence_type`:
+
+| Type | Came from | May a resume state it? |
+|---|---|---|
+| `documented` | old resume, LinkedIn, performance review, offer letter | Yes |
+| `self-reported` | a ramble or interview answer | Yes, as experience. Never as a verified metric. |
+| `self-assessment` | their opinion of themselves | **No.** Shapes emphasis and wording only. |
+| `derived` | computed by the tool (`skills:`) | Internal only. |
 
 **The rules any writer must follow:**
 
-1. **Never fabricate.** Every fact traces to a `source:`, either the intake
-   file it came from or `user-confirmed <YYYY-MM-DD>` when the person
-   answered a question directly.
-2. **Dedupe by company plus overlapping dates**, not by matching text. One
+1. **Never fabricate.** Every claim carries an `evidence_type` and a
+   `source:`: an intake filename, or `user-ramble <YYYY-MM-DD>` /
+   `user-interview <YYYY-MM-DD>` when it came from the person directly.
+2. **Never promote evidence.** Confidence does not turn a `self-assessment`
+   into a `self-reported` fact, and precision does not turn a
+   `self-reported` account into a `documented` one. Promotion requires a
+   new source document.
+3. **Dedupe by company plus overlapping dates**, not by matching text. One
    job described two ways across two old resumes is one entry with a unioned
    achievement list.
-3. **Ask when it does not fit.** Conflicting dates, a title that does not map,
-   an achievement that could belong to two roles: stop and ask. Do not force
-   it into a field and do not drop it.
-4. **`skills:` is derived.** Regenerate the whole section from tags on every
-   ingestion run. Never hand-edit it incrementally.
-5. **IDs are stable.** Once `exp-acme-2021` exists, later runs update it in
+4. **Ask when it does not fit.** Conflicting dates, a title that does not
+   map, an achievement that could belong to two roles: stop and ask. Do not
+   force it into a field and do not drop it.
+5. **`skills:` is derived.** Regenerate the whole section from tags on every
+   write. Never hand-edit it incrementally.
+6. **IDs are stable.** Once `exp-acme-2021` exists, later runs update it in
    place instead of creating a second entry.
+7. **Long-form goes to markdown.** Rambles and reflections live under
+   `self/reflections/` and are referenced by path. YAML holds structure,
+   markdown holds prose.
+8. **Keep `meta.enrichment_gaps` current.** It is how the next session knows
+   what to ask about instead of asking at random.
 EOF
 
 write_if_absent "$DATA_DIR/_config/format.md" <<'EOF'
@@ -241,6 +302,27 @@ regenerated.
 
 Want a different look? Edit `theme.css` once. Every future resume follows.
 Changing the styling of a single output is the error case, not the feature.
+
+## What may be printed
+
+Format consistency is one half. The other is what is allowed onto the page
+at all, which `evidence_type` decides (see `schema.md`):
+
+- `documented` and `self-reported` material may appear.
+- `self-assessment` never appears as a claim. It decides which experience
+  gets selected and how it is worded, nothing more.
+- `derived` never appears. Skill names may be listed; confidence levels and
+  evidence counts stay internal.
+
+A resume that prints someone's opinion of themselves as a fact is the
+failure this rule exists to prevent.
+
+## Where deliverables land
+
+`04_deliverable/output/<YYYY-MM-DD>-<slug>/`, holding `positioning.md` from
+`career-target` and `resume.html` plus `resume.pdf` from `resume-build`. The
+date prefix means applying to the same company twice leaves a history rather
+than an overwrite.
 EOF
 
 # ---------------------------------------------------------------- Layer 2
@@ -248,29 +330,43 @@ EOF
 write_if_absent "$DATA_DIR/01_intake/CONTEXT.md" <<'EOF'
 # 01_intake
 
-Raw career material lands in this folder's root: old resumes (PDF, DOCX,
-TXT, MD), a LinkedIn "Download your data" export, cover letters, job
-postings already applied to.
+Raw career documents land in this folder's root: old resumes (PDF, DOCX,
+TXT, MD), a LinkedIn "Download your data" export, performance reviews, offer
+and promotion letters, cover letters, job postings already applied to.
+
+This stage is bootstrap. Documents hold titles, dates, and old bullets. They
+do not hold scope or judgment. That comes from `career-enrich` in stage 02.
 
 ## Inputs
 - Files dropped in `01_intake/` root (everything except `CONTEXT.md` and `output/`)
 - Layer 3: `../_config/schema.md`
 
 ## Process
-1. List the files in this folder's root. If there are none, say so and stop.
-2. Run the `resume-ingest` skill, or follow it by hand: this stage extracts,
+1. List the files in this folder's root. **If there are none, do not just
+   report an empty folder.** Say what to drop in: old resumes in any format,
+   a LinkedIn data export, performance reviews, offer letters, cover letters.
+   Add that someone with no documents can skip this stage and run
+   `career-enrich` instead, which builds the record by asking.
+2. Run the `career-ingest` skill, or follow it by hand: this stage extracts,
    `02_career-db` merges.
-3. Extract text per type. PDF, TXT, MD: read directly. DOCX:
+3. Classify every file: usable career material, context only (cover letters,
+   old postings, recommendation letters), or not relevant (screenshots, tax
+   documents, whatever got dragged in). **Name every skipped file and say
+   why.** Never delete anything, junk included. Ask when you cannot tell.
+4. Extract text per type. PDF, TXT, MD: read directly. DOCX:
    `pandoc "<file>" -t markdown`. LinkedIn export: parse `Positions.csv`,
    `Education.csv`, `Skills.csv` as structured data, not as prose. They are
    the most reliable source for exact dates and titles.
-4. Treat cover letters and old job postings as context only. They never
-   become experience or education entries. A cover letter can confirm
-   phrasing the person likes; an old posting shows what roles they target.
-5. Hand the extracted candidate entries to `02_career-db`, each carrying a
-   `source:` naming the file it came from.
-6. Move every consumed file to `output/processed/`, keeping its filename, so
-   a re-run does not ingest it twice.
+5. **Read performance reviews closely.** They are the highest-value document
+   here: they carry hard numbers the person has forgotten, and a manager's
+   account of scope. A metric from a review is the strongest evidence in the
+   record.
+6. Treat cover letters and old job postings as context only. They never
+   become experience or education entries.
+7. Hand extracted entries to `02_career-db`, each carrying
+   `evidence_type: documented` and a `source:` naming the file.
+8. Move every consumed file to `output/processed/`, keeping its filename
+   exactly so every `source:` still resolves. Move, never copy, never delete.
 
 ## Outputs
 - Consumed source files -> `output/processed/`
@@ -284,76 +380,108 @@ EOF
 write_if_absent "$DATA_DIR/02_career-db/CONTEXT.md" <<'EOF'
 # 02_career-db
 
-`career.yaml` lives here. It is the one durable artifact in this workspace
-and it is meant to grow over years, not be rebuilt per application.
+The durable asset. `career.yaml` is the structured spine;
+`self/reflections/` holds the long-form prose it references. Both are meant
+to grow over years, not be rebuilt per application.
+
+Two skills write here. `career-ingest` merges documents in (bootstrap).
+`career-enrich` interviews the person and fills in what documents never
+held (the loop that actually matters). A ramble dropped into `self/` is a
+valid trigger for the second.
 
 ## Inputs
 - Layer 4: `../01_intake/output/processed/` (what was just consumed)
 - Layer 3: `../_config/schema.md`
-- `career.yaml` in this folder, the current state of the database
+- `career.yaml` and `self/reflections/` in this folder, the current record
+- `@@REPO_DIR@@/schema/interview-bank.md`, for enrichment sessions
 
 ## Process
-1. Read `career.yaml` first. You are merging into it, never starting over.
-2. Match experiences by company plus overlapping dates, not by title text.
-   The same job titled two ways across two resumes is one entry with a
-   unioned achievement list. Dedupe reworded duplicates of the same fact;
-   keep genuinely distinct achievements.
-3. Give a new role a stable id: `exp-<company-slug>-<start-year>`. Never
-   reuse or renumber an existing id.
-4. Give every fact a `source:`. Use the intake filename, or
-   `user-confirmed <YYYY-MM-DD>` when the person answered directly. An
-   unsourced fact does not go in the file.
-5. Tag every achievement with the skills, technologies, and themes it
-   demonstrates. Reuse tag names already in the file: `python`, not `Python3`.
-6. Batch every ambiguity into one set of questions at the end of the pass:
-   conflicting dates or titles, unclear attribution, a block that does not
-   map onto the schema. Ask, do not guess, and do not silently drop it.
-7. Regenerate the whole `skills:` section from tags. `first_used` and
-   `last_used` from the date range of entries carrying the tag,
-   `evidence_count` from how many carry it, `confidence` high (5+ entries or
-   used within 2 years), medium (2 to 4, or 3 to 5 years ago), low (1 entry,
-   or not used in 5+ years).
-8. Bump `meta.last_ingested` to today.
-9. Write an ingestion report to `output/<YYYY-MM-DD>-ingest.md`: entries
-   added, entries merged into existing ones, skills now tracked, questions
-   asked and how they were answered.
+1. Read `career.yaml` in full first. You merge into it, never start over.
+   Read existing reflections before interviewing.
+2. Every claim gets an `evidence_type` and a `source:`. Documents produce
+   `documented`. What the person tells you is `self-reported` (events) or
+   `self-assessment` (their opinion of themselves). Never promote one to
+   another, however confidently it was said.
+3. Match experiences by company plus overlapping dates, not title text.
+   Union achievement lists, dedupe reworded duplicates, keep distinct ones.
+   New roles get a stable id `exp-<company-slug>-<start-year>`, never reused.
+   Tag everything, reusing tag names already in the file: `python`, not
+   `Python3`.
+4. **Enrichment:** find the thinnest area (no metrics, no `context:`, no
+   reflections, or an empty `self_assessment`), ask three to five questions
+   from the interview bank, then stop. Never ask what the record answers,
+   never suggest an answer to fill a silence.
+5. **Rambles go to `self/reflections/<slug>.md`**, lightly cleaned but in
+   the person's words, headed with the capture date. Extract facts into
+   `career.yaml`, link the file from that experience's `reflections:` list.
+   Multi-paragraph prose never goes into YAML.
+6. Never invent or round a number. If they do not know, log no `metric`. Set
+   `context.initiative` only when they said which it was. Batch every
+   ambiguity into one set of questions: ask, do not guess, do not drop.
+7. Regenerate `skills:` wholly from tags: `first_used`/`last_used` from the
+   date range carrying the tag, `evidence_count` from how many carry it,
+   `confidence` high (5+ entries or used within 2 years), medium (2 to 4, or
+   3 to 5 years ago), low (1 entry, or 5+ years stale). All `derived`.
+8. Bump `meta.last_ingested` or `meta.last_enriched`, and rewrite
+   `meta.enrichment_gaps` as specific pointers, for example
+   `"exp-fernhill-2018 has no metrics and no reflection"`.
+9. Write a report to `output/<YYYY-MM-DD>-ingest.md` or `-enrich.md`: what
+   was added or merged, files skipped and why, questions and answers, and
+   the updated gap list.
+10. **Say how thin the record is.** Count roles lacking metrics, `context:`,
+    and reflections, and whether `self_assessment` is empty. After an ingest
+    run, recommend `career-enrich` and name what it should ask first. A thin
+    record produces a resume that reads like a job description.
 
 ## Outputs
 - `career.yaml` (updated in place)
-- `<YYYY-MM-DD>-ingest.md` -> `output/`
+- `self/reflections/<slug>.md` (new reflections)
+- `<YYYY-MM-DD>-ingest.md` / `-enrich.md` -> `output/`
 
 ## Checkpoints
-- Read the ingestion report before building anything from this database.
-- Spot-check by hand any experience the report flags as merged from two
-  sources. Merges are where the wrong dates get in.
+- Read the run report before building anything from this record.
+- Spot-check any experience merged from two sources. Merges are where the
+  wrong dates get in.
+- Check nothing the person merely believes about themselves got written as
+  a `documented` fact.
 EOF
 
 write_if_absent "$DATA_DIR/03_target/CONTEXT.md" <<'EOF'
 # 03_target
 
 One job posting, captured verbatim and reduced to a brief. This stage
-records what the job wants. It does not decide what to say about it.
+records what the job wants. Deciding what to say about it happens in
+`04_deliverable`.
 
 ## Inputs
 - A job posting: pasted text, a URL, or a file dropped in `03_target/`
-- Layer 4: `../02_career-db/career.yaml` (only to confirm the database is
-  filled before an application pass starts)
+- Layer 4: `../02_career-db/career.yaml` (to confirm the record is filled
+  enough before an application pass starts)
 
 ## Process
 1. Build the slug: `<company>-<role>`, lowercase and hyphenated. Create
    `output/<slug>/`. This exact slug is reused in `04_deliverable`.
 2. Write the posting verbatim to `output/<slug>/posting.md`. Fetch the URL if
    given one. Do not summarize or trim here. The raw text is the record, and
-   postings get taken down.
-3. Write `output/<slug>/brief.md` with four sections and nothing else:
+   postings get taken down within weeks. If a fetch came back partial or
+   paywalled, say so and ask for the pasted text.
+3. Write `output/<slug>/brief.md` with these sections and nothing else:
    - **Target title**
    - **Company**
    - **Emphasized skills and technologies**, as a list, in the posting's own
      words
    - **Key responsibilities**, as a list
-4. Keep `brief.md` to the posting's own claims. Do not compare it against
-   `career.yaml` here. Selection happens in `04_deliverable`.
-5. If the posting arrived as a file dropped in this folder, move it into
+   - **Seniority signals**: years asked for, scope of ownership, who the role
+     reports to, whether it names leading or mentoring
+   Note which requirements the posting repeats or lists first. Repetition is
+   the clearest signal a posting gives about what it screens for.
+4. Keep `brief.md` to the posting's own claims. Do not infer what the company
+   "really wants" and do not import outside knowledge of it. Comparison
+   against `career.yaml` happens in `04_deliverable`.
+5. Past briefs in `output/*/brief.md` are the pattern-detection input for
+   `career-target`. Leave them in place; they are why a recurring gap can be
+   named as a ceiling rather than a one-off.
+6. If the posting arrived as a file dropped in this folder, move it into
    `output/<slug>/` once captured.
 
 ## Outputs
@@ -362,60 +490,83 @@ records what the job wants. It does not decide what to say about it.
 ## Checkpoints
 - Read `brief.md` before running `04_deliverable`. It is the tailoring
   instruction: a wrong target title or a missed skill propagates straight
-  into the resume.
+  into the positioning and the resume.
 EOF
 
 write_if_absent "$DATA_DIR/04_deliverable/CONTEXT.md" <<'EOF'
 # 04_deliverable
 
-The tailored resume. Content is selected per job. Format is identical every
-time.
+Two artifacts per application, in one dated folder:
+`output/<YYYY-MM-DD>-<slug>/`. `career-target` writes `positioning.md`
+(the coaching half). `resume-build` writes `resume.html` and `resume.pdf`
+(the document half). The date prefix means a second application to the same
+company leaves a history rather than an overwrite.
+
+Stopping after `positioning.md` is a legitimate outcome. Deciding not to
+apply, with a reason and a list of what would change it, is an answer.
 
 ## Inputs
 - Layer 4: `../03_target/output/<slug>/brief.md` and `posting.md`
-- Layer 4: `../02_career-db/career.yaml`
+- Layer 4: `../02_career-db/career.yaml` and `../02_career-db/self/reflections/`
 - Layer 3: `../_config/format.md`
 
 ## Process
-1. Run the `resume-build` skill for `<slug>`, or follow these steps by hand.
-   Use the same `<slug>` that `03_target` created.
-2. Rank experiences by tag overlap with `brief.md` plus recency. Do not bury
-   a highly relevant older role under a less relevant recent one, and do not
-   resurrect a decade-stale role over recent equivalent experience.
-3. Within a selected role, include the most relevant achievements first, not
-   every achievement logged for it. Selecting is what makes it tailored.
-4. Every fact comes from `career.yaml` verbatim, or reworded without changing
-   its meaning. Never invent to close a gap the posting opens. Leave it out
-   and report the gap instead.
-5. Write a 2 to 3 sentence summary grounded in `person.summary`, angled at
-   this posting, claiming nothing unsupported elsewhere in `career.yaml`.
-6. Write `output/<slug>/resume.html`. Inline `templates/theme.css` verbatim
-   into the `<style>` block and follow `resume-template.html` for section
-   order and class names. If those files have been edited, the edits are the
-   format now. See `../_config/format.md`.
-7. Render the PDF:
-   ```bash
-   @@REPO_DIR@@/skills/resume-build/scripts/render-pdf.sh \
-     "output/<slug>/resume.html" "output/<slug>/resume.pdf"
-   ```
-   This step needs shell access, since it drives headless Chrome. A surface
-   without a shell stops after `resume.html` and reports the PDF as pending.
-8. Verify the PDF exists and runs 1 to 2 pages. If `pdftoppm` is available,
-   render a PNG and look at it: check nothing overflows or reads cramped.
+1. Run `career-target` for `<slug>`, then `resume-build`, or do it by hand.
+   Reuse the slug `03_target` created and keep both artifacts in one dated
+   folder.
+2. **Positioning first.** `positioning.md` covers: how the person reads for
+   this role, the strongest evidence to lead with, the honest gaps, concrete
+   tips sized to each gap, and a real apply-or-not call. With three or more
+   past briefs at `../03_target/output/*/brief.md`, name any recurring
+   requirement as a pattern. Fewer than three is too small a sample.
+3. **Check the record can support advice.** If the relevant roles carry no
+   metrics and no context and `self_assessment` is empty, say so, write the
+   brief, and recommend `career-enrich` first. A confident analysis of an
+   empty record is worse than none, because the person will act on it.
+4. **Then the resume.** Rank by tag overlap with `brief.md` plus recency,
+   following `positioning.md` where it exists. Do not bury a relevant older
+   role under a less relevant recent one, and do not resurrect a decade-stale
+   role over recent equivalent experience. Include the most relevant
+   achievements per role, not every one logged. Prefer `documented` ones
+   carrying a `metric`.
+5. **What may be printed** (see `../_config/format.md`): `documented` and
+   `self-reported` may appear. `self-assessment` shapes selection and wording
+   and is never printed as a claim. `derived` is internal; skill names may be
+   listed, confidence levels and evidence counts may not.
+6. Every fact comes from `career.yaml` verbatim or reworded without changing
+   its meaning. Never invent to close a gap, never promote evidence to make a
+   bullet land harder. Leave it out and report the gap.
+7. Write `resume.html` into the dated folder, opening with a 2 to 3 sentence
+   summary grounded in `person.summary` and angled at this posting. Inline
+   `theme.css` verbatim into the `<style>` block and follow
+   `resume-template.html` for section order and class names. Edits to those
+   files are the format now.
+8. Render the PDF with
+   `@@REPO_DIR@@/skills/resume-build/scripts/render-pdf.sh <html> <pdf>`. It
+   drives headless Chrome, so a surface without a shell stops after
+   `resume.html` and reports the PDF as pending. Verify the result runs 1 to
+   2 pages with nothing overflowing.
 
 ## Outputs
-- `resume.html`, `resume.pdf` -> `output/<slug>/`
+- `positioning.md`, `resume.html`, `resume.pdf` -> `output/<YYYY-MM-DD>-<slug>/`
 
 ## Checkpoints
-- Look at the PDF before sending it anywhere. Page count, overflow, spacing.
+- Read `positioning.md` before sending anything. The gap list is the part
+  worth acting on, and the recommendation may be "do not apply".
+- Look at the PDF. Page count, overflow, spacing.
 - Any gap between `brief.md` and `career.yaml` is material for the next
-  `01_intake` run. Write it down rather than forgetting it.
+  `career-enrich` session. Write it into `meta.enrichment_gaps` rather than
+  forgetting it.
+- Nothing on the page should trace back to a `self-assessment`.
 EOF
 
 # ---------------------------------------------------------- career database
 
 if [[ ! -f "$DATA_DIR/02_career-db/career.yaml" ]]; then
   cat > "$DATA_DIR/02_career-db/career.yaml" <<'EOF'
+# The durable record of one working life. Grows over years.
+# Every claim carries an evidence_type and a source. See _config/schema.md.
+
 person:
   name: ""
   headline: ""
@@ -429,13 +580,25 @@ experiences: []
 education: []
 projects: []
 certifications: []
+
+# DERIVED. Regenerated from tags on every write, never hand-edited.
 skills: []
 
+# SELF-ASSESSMENT. The person's own view. Never printed on a resume as fact.
+# Filled in by career-enrich, by asking. Documents rarely contain this.
+self_assessment:
+  strengths: []
+  people_come_to_me_for: []
+  working_on: []
+  prefers: []
+
 meta:
-  schema_version: 1
+  schema_version: 2
   last_ingested: null
+  last_enriched: null
+  enrichment_gaps: []
 EOF
-  echo "Created $DATA_DIR/02_career-db/career.yaml (empty scaffold)"
+  echo "Created $DATA_DIR/02_career-db/career.yaml (empty v2 scaffold)"
 else
   echo "career.yaml already exists at $DATA_DIR/02_career-db/, left untouched"
 fi

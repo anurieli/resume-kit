@@ -1,18 +1,18 @@
-# templates — the format
+# templates: the format
 
 This folder defines what every resume this tool produces looks like. It is
 meant to be edited. Change it once, and every future resume follows.
 
 ## The two files
 
-**`theme.css`** — the format itself: fonts, sizes, colors, spacing, page
+**`theme.css`** is the format itself: fonts, sizes, colors, spacing, page
 margins, section rules. **This is the file you edit** to change how resumes
 look. `resume-build` copies it verbatim into every generated resume and is
 explicitly forbidden from restyling individual outputs. That rule is the
 whole reason output stays consistent across applications instead of drifting
 a little each time.
 
-**`resume-template.html`** — the structure: which sections exist, in what
+**`resume-template.html`** is the structure: which sections exist, in what
 order, and the exact markup (class names) each one uses. Edit this to change
 section order, rename a section, or add one. `resume-build` follows this
 structure and fills it with content selected from `career.yaml`.

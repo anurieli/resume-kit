@@ -1,5 +1,14 @@
-# Example career.yaml — fictional data, for demoing/testing resume-kit.
+# Example career.yaml (schema v2). Fictional data, for demoing/testing resume-kit.
 # Copy the shape, not the content, into your own private data directory.
+#
+# The source paths below are what a real record looks like after a few runs:
+# documented claims cite an archived file under 01_intake/output/processed/,
+# and anything the person said in an interview or ramble cites the session.
+# In a real workspace those files exist; here they are illustrative.
+#
+# Note the mix of evidence types. This is a record that has been ingested
+# once and enriched twice: the Northwind role has context and a reflection,
+# the Fernhill role is still thin and is flagged in meta.enrichment_gaps.
 
 person:
   name: "Jordan Rivera"
@@ -25,14 +34,34 @@ experiences:
     start: "2021-03"
     end: "present"
     tags: [python, distributed-systems, leadership, kafka]
+
     achievements:
       - text: "Led migration of the billing reconciliation pipeline to an event-driven architecture, cutting reconciliation errors 40% and processing time from 6 hours to 20 minutes."
         tags: [python, distributed-systems, kafka]
         metric: "40% error reduction, 18x faster"
-        source: "examples/career.example.yaml (seed data)"
+        evidence_type: documented
+        source: "01_intake/output/processed/perf-review-2023-H2.pdf"
       - text: "Mentored 3 junior engineers; two were promoted to mid-level within a year."
         tags: [leadership, mentorship]
-        source: "examples/career.example.yaml (seed data)"
+        evidence_type: documented
+        source: "01_intake/output/processed/perf-review-2023-H2.pdf"
+      - text: "Rewrote the on-call runbook and cut repeat pages for the same three failure modes to near zero."
+        tags: [operations, documentation]
+        evidence_type: self-reported
+        source: "user-ramble 2026-08-15"
+
+    context:
+      team_size: 4
+      scope: "Owned the billing pipeline end to end for roughly 8 months, including the finance-side rollout."
+      initiative: unprompted
+      evidence_type: self-reported
+      source: "user-ramble 2026-08-15"
+
+    reflections:
+      - path: "self/reflections/northwind-billing-migration.md"
+        captured: "2026-08-15"
+        summary: "What the migration actually involved, why nobody else wanted it, and what the hard part turned out to be."
+
   - id: exp-fernhill-2018
     company: "Fernhill Software"
     title: "Backend Engineer"
@@ -40,15 +69,18 @@ experiences:
     start: "2018-06"
     end: "2021-02"
     tags: [python, postgres, api-design]
+
     achievements:
       - text: "Designed and shipped the public REST API powering the mobile app, scaling from 0 to 50k daily active users."
         tags: [api-design, python]
         metric: "0 to 50k DAU"
-        source: "examples/career.example.yaml (seed data)"
+        evidence_type: documented
+        source: "01_intake/output/processed/resume-2021-old.pdf"
       - text: "Reduced average API response time from 800ms to 120ms through query optimization and caching."
         tags: [postgres, performance]
         metric: "800ms to 120ms"
-        source: "examples/career.example.yaml (seed data)"
+        evidence_type: documented
+        source: "01_intake/output/processed/resume-2021-old.pdf"
 
 education:
   - id: edu-utaustin
@@ -57,7 +89,8 @@ education:
     start: "2014-09"
     end: "2018-05"
     tags: [cs-fundamentals]
-    source: "examples/career.example.yaml (seed data)"
+    evidence_type: documented
+    source: "01_intake/output/processed/linkedin-export/Education.csv"
 
 projects:
   - id: proj-queuewatch
@@ -65,42 +98,84 @@ projects:
     description: "Open-source Kafka consumer-lag dashboard, 400+ GitHub stars."
     tags: [kafka, open-source, python]
     url: "https://github.com/jordanrivera-example/queuewatch"
-    source: "examples/career.example.yaml (seed data)"
+    evidence_type: documented
+    source: "01_intake/output/processed/resume-2023.pdf"
 
 certifications: []
 
+# ---- DERIVED. Never hand-edited. Regenerated from tags on every write. ----
 skills:
   - name: python
     first_used: "2018-06"
     last_used: "present"
     evidence_count: 4
     confidence: high
+    evidence_type: derived
   - name: distributed-systems
     first_used: "2021-03"
     last_used: "present"
     evidence_count: 1
     confidence: medium
+    evidence_type: derived
   - name: kafka
     first_used: "2021-03"
     last_used: "present"
     evidence_count: 2
     confidence: medium
+    evidence_type: derived
   - name: leadership
     first_used: "2021-03"
     last_used: "present"
     evidence_count: 1
     confidence: medium
+    evidence_type: derived
+  - name: operations
+    first_used: "2021-03"
+    last_used: "present"
+    evidence_count: 1
+    confidence: medium
+    evidence_type: derived
   - name: postgres
     first_used: "2018-06"
     last_used: "2021-02"
     evidence_count: 1
     confidence: low
+    evidence_type: derived
   - name: api-design
     first_used: "2018-06"
     last_used: "2021-02"
     evidence_count: 1
     confidence: low
+    evidence_type: derived
+
+# ---- SELF-ASSESSMENT. The person's own view. Never printed as fact. ----
+self_assessment:
+  strengths:
+    - claim: "Getting finance and engineering to agree on what a number means before building anything."
+      backed_by: [exp-northwind-2021]
+      confidence: high
+      source: "user-ramble 2026-08-15"
+    - claim: "Taking over systems nobody wants to own and making them boring."
+      backed_by: [exp-northwind-2021, exp-fernhill-2018]
+      confidence: high
+      source: "user-interview 2026-08-16"
+  people_come_to_me_for:
+    - "Untangling a pipeline that fails in a different way every week."
+    - "Writing the runbook when there isn't one."
+  working_on:
+    - claim: "Kubernetes. Can read a manifest, cannot design a cluster."
+      source: "user-interview 2026-08-16"
+    - claim: "Saying no to work that lands on me because I am the one who will do it."
+      source: "user-ramble 2026-08-15"
+  prefers:
+    - "Small teams, high autonomy, a system that is already on fire."
+    - "Written decisions over standups."
 
 meta:
-  schema_version: 1
-  last_ingested: "2026-08-17"
+  schema_version: 2
+  last_ingested: "2026-08-14"
+  last_enriched: "2026-08-16"
+  enrichment_gaps:
+    - "exp-fernhill-2018 has no context block, no reflections, and both achievements came from one old resume."
+    - "No education or early-career detail beyond the LinkedIn export."
+    - "self_assessment.prefers is thin: nothing yet on what kind of management they work well under."
