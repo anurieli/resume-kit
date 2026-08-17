@@ -77,6 +77,27 @@ One question. Then get on with the task.
      are missing.
    - Any experience whose achievements all came from one old resume, which
      usually means the record is that resume rather than the job.
+   Then check two things that decide what is worth asking about at all:
+
+   - **What the output actually renders.** Read
+     `<data_dir>/_config/resume-template.html`. A field nothing renders is a
+     lower priority than a field every resume prints. Untethered skills are
+     the classic failure: a language listed in a floating skills block with
+     no achievement behind it cannot be printed under the evidence rule, so a
+     technical resume comes out with no stack. Attaching an existing skill to
+     the role or project where it was actually used is usually worth more
+     than adding a new fact.
+   - **What this person is actually applying to.** Read any
+     `<data_dir>/03_target/output/*/brief.md`. If the last few targets all
+     wanted a certain kind of evidence, enrich toward that first. A metric on
+     the role their target roles care about beats a reflection on a job from
+     eight years ago. If there are no targets yet, prioritize the current and
+     most senior roles, which is where any posting will look first.
+
+   Rank what to ask by relevance to those two, not by walking the schema in
+   order. Fill what the output needs before what the file happens to be
+   missing.
+
    Report this in four or five lines and name the record as thin, partial,
    or rich. Do not soften it. If the record would produce a generic resume,
    say so, and say which role is doing the most damage.
