@@ -38,7 +38,7 @@ spending the run, not a refusal.
 
 `career.yaml` carries an `evidence_type` on every claim, and it decides what
 this skill is allowed to put on a page. Read
-`../../schema/career-schema.md` for the full rule. Applied here:
+`<data_dir>/_config/career-schema-full.md` for the full rule. Applied here:
 
 | `evidence_type` | May it appear in the resume? |
 |---|---|
@@ -119,12 +119,13 @@ engineering on the rollout" rather than "wrote the migration script."
    application to the same company from overwriting the first, so the
    folder is a history of what was actually sent and when. Build it from
    the repo's `templates/` folder:
-   - **Read `templates/theme.css` and inline its full contents verbatim**
+   - **Read `<data_dir>/_config/theme.css` and inline its full contents
+     verbatim**
      into the output's `<style>` block. Do not rewrite, reformat, tune, or
      "improve" any rule, and do not add styles of your own. This file is
      the format; copying it unchanged is what keeps every resume this tool
      produces visually identical.
-   - **Follow `templates/resume-template.html` for structure**: the same
+   - **Follow `<data_dir>/_config/resume-template.html` for structure**: the same
      section order, the same class names (`.entry`, `.entry-head`,
      `.entry-title`, `.entry-org`, `.entry-dates`, `.entry-loc`,
      `ul.bullets`, `.skills-list`), repeating the `.entry` block per
@@ -168,7 +169,7 @@ engineering on the rollout" rather than "wrote the migration script."
 - Don't change the format per job. Content is tailored; format never is.
   If a job "would look better" with different styling, that instinct is
   wrong. The consistency is the product. A genuine format change belongs
-  in `templates/theme.css`, applied to all future resumes, not to one
+  in `<data_dir>/_config/theme.css`, applied to all future resumes, not to one
   output.
 - Don't dump the entire career database into one resume. Tailoring means
   selecting, not including everything "just in case."

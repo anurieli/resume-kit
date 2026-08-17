@@ -1,7 +1,16 @@
-# templates: the format
+# templates: the default format
 
-This folder defines what every resume this tool produces looks like. It is
-meant to be edited. Change it once, and every future resume follows.
+These are the DEFAULTS a new workspace is seeded from, not the live format.
+
+When `resume-kit-init` scaffolds a workspace, it copies `theme.css` and
+`resume-template.html` into that workspace's `_config/`. From then on the
+workspace copy is what renders, and editing these repo files does not change
+an existing workspace. Two reasons: a workspace stays portable (any agent that
+can read the folder can produce a correctly formatted resume with no path back
+to this repo), and two people using the same tool can have different formats.
+
+**To change how YOUR resumes look, edit `<your-data-dir>/_config/theme.css`.**
+Edit the files here only to change what future workspaces start with.
 
 ## The two files
 

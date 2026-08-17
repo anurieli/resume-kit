@@ -30,7 +30,7 @@ rule here, change it in the contract too.
 
 Read `~/.config/resume-kit/config.yaml` for `data_dir`. If it's missing,
 tell the user to run `resume-kit-init` first and stop. Read
-`../../schema/career-schema.md` (relative to this skill, in the resume-kit
+`<data_dir>/_config/career-schema-full.md` (repo copy: `../../schema/career-schema.md`, in the resume-kit
 repo) for the exact shape of `career.yaml` and its hard rules. Follow those
 rules literally, especially the evidence rule below.
 

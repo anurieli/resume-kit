@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-17 13:58 - Workspace is now self-contained, so it works on surfaces that cannot reach the repo
+The workspace pointed at `~/Desktop/resume-kit` by absolute path for `theme.css`,
+`resume-template.html`, and `interview-bank.md`. Opening the data folder on a surface
+that can only see that folder (Claude Desktop, a synced folder on another machine) meant
+an unstyled resume and an interview with no question bank. It also contradicted the
+original intent that the format be editable inside the folder structure.
+
+`resume-kit-init` now seeds copies of the theme, the template, the interview bank, and
+the full schema into the workspace's `_config/`, and the workspace copy is authoritative
+from then on. The repo versions are what a NEW workspace starts from; editing them does
+not change an existing workspace, and two people can run the same tool with different
+formats. All five skills and every stage contract now read the workspace copies rather
+than repo paths. The one remaining outward reference is `render-pdf.sh`, which genuinely
+needs a shell; the deliverable contract now says a shell-less surface should stop at the
+print-ready `resume.html` and have the user print to PDF from a browser, and must not
+report the deliverable complete until a PDF exists either way.
+
+Verified by scaffolding a fresh workspace and confirming it carries everything needed to
+produce a formatted resume with no path back to the repo: theme present, template
+placeholders intact, 19 interview questions, evidence table in the schema copy.
+Files: skills/resume-kit-init/scripts/init.sh, skills/resume-build/SKILL.md,
+skills/career-enrich/SKILL.md, skills/career-target/SKILL.md, skills/career-ingest/SKILL.md,
+templates/README.md.
+
 ## 2026-08-17 13:45 - Reframed from resume generator to career folder: schema v2, interview loop, and a coaching layer
 The tool treated ingestion as the main event, which capped it at reformatting whatever
 a previous resume already said. Reframed around the durable asset: a career record that

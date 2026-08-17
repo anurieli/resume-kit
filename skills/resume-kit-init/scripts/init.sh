@@ -105,7 +105,8 @@ Owner: whoever runs this workspace. One person, one career record.
 ```
 IDENTITY.md              you are here. Layer 0.
 CONTEXT.md               Layer 1: routing. Which stage handles what.
-_config/                 Layer 3: stable reference (schema rules, output format).
+_config/                 Layer 3: schema rules, interview bank, theme.css,
+                         resume template. This workspace's own copies.
 01_intake/               raw documents land here.
 02_career-db/
   career.yaml            the structured spine.
@@ -227,11 +228,36 @@ New here? Read `IDENTITY.md` first.
 EOF
 
 # ---------------------------------------------------------------- Layer 3
+#
+# Seed the workspace's own copies of the format and reference files. These are
+# copies on purpose, not links: a workspace that carries its own theme, its own
+# template, and its own schema can be opened anywhere by any agent that can read
+# files, with no path back to this repo. The repo versions are the defaults a
+# NEW workspace starts from. Once seeded, the workspace copy is authoritative
+# and is never overwritten by a re-run.
+
+seed_from_repo() {
+  local src="$1" dest="$2"
+  if [[ -e "$dest" ]]; then
+    SKIPPED=$((SKIPPED + 1))
+  elif [[ -f "$src" ]]; then
+    mkdir -p "$(dirname "$dest")"
+    cp "$src" "$dest"
+    CREATED=$((CREATED + 1))
+  else
+    echo "WARNING: expected repo file missing, not seeded: $src" >&2
+  fi
+}
+
+seed_from_repo "$REPO_DIR/templates/theme.css"            "$DATA_DIR/_config/theme.css"
+seed_from_repo "$REPO_DIR/templates/resume-template.html" "$DATA_DIR/_config/resume-template.html"
+seed_from_repo "$REPO_DIR/schema/interview-bank.md"       "$DATA_DIR/_config/interview-bank.md"
+seed_from_repo "$REPO_DIR/schema/career-schema.md"        "$DATA_DIR/_config/career-schema-full.md"
 
 write_if_absent "$DATA_DIR/_config/schema.md" <<'EOF'
 # career.yaml schema (v2)
 
-Full schema: `@@REPO_DIR@@/schema/career-schema.md`. Read it before writing
+Full schema: `_config/career-schema-full.md`, in this workspace. Read it before writing
 to `02_career-db/career.yaml`. Summary of the shape and the hard rules:
 
 **Shape.** Top-level keys: `person`, `experiences`, `education`, `projects`,
@@ -282,7 +308,7 @@ EOF
 write_if_absent "$DATA_DIR/_config/format.md" <<'EOF'
 # Output format
 
-The format lives in `@@REPO_DIR@@/templates/`, and it is meant to be edited.
+The format lives HERE, in this workspace, and it is meant to be edited.
 
 - **`theme.css`** is the format: fonts, sizes, spacing, page margins, section
   rules. Edit this file to change how every future resume looks.
@@ -393,7 +419,7 @@ valid trigger for the second.
 - Layer 4: `../01_intake/output/processed/` (what was just consumed)
 - Layer 3: `../_config/schema.md`
 - `career.yaml` and `self/reflections/` in this folder, the current record
-- `@@REPO_DIR@@/schema/interview-bank.md`, for enrichment sessions
+- `../_config/interview-bank.md`, for enrichment sessions
 
 ## Process
 1. Read `career.yaml` in full first. You merge into it, never start over.

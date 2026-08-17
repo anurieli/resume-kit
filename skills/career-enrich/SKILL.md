@@ -27,10 +27,12 @@ Read, in this order, and do not start asking until you have:
 
 1. `<data_dir>/02_career-db/career.yaml`. The whole file, not a skim. Every
    question you ask has to be informed by it.
-2. `../../schema/career-schema.md` (relative to this skill, in the
-   resume-kit repo). The `evidence_type` table there governs everything you
-   write.
-3. `../../schema/interview-bank.md`. This is where your questions come from.
+2. `<data_dir>/_config/career-schema-full.md`. The `evidence_type` table
+   there governs everything you write. (The repo copy at
+   `../../schema/career-schema.md` is the same file; prefer the workspace
+   one so this works when the repo is not reachable.)
+3. `<data_dir>/_config/interview-bank.md`. This is where your questions
+   come from. (Repo copy: `../../schema/interview-bank.md`.)
 4. Any existing files under `<data_dir>/02_career-db/self/reflections/`, so
    you do not ask about ground the person has already covered.
 
@@ -64,7 +66,7 @@ by interview and it will take several sessions.
    start there instead. Tell the user which area you picked and why, in one
    sentence.
 3. **Ask three to five questions.** Draw them from
-   `../../schema/interview-bank.md`, chosen for the target area, never read
+   `<data_dir>/_config/interview-bank.md`, chosen for the target area, never read
    top to bottom. Rules that matter more than the question list:
    - Never ask something `career.yaml` already answers. If three
      achievements are logged for Acme, do not ask what they did at Acme, ask

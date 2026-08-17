@@ -28,7 +28,7 @@ Read `~/.config/resume-kit/config.yaml` for `data_dir`. If it is missing,
 tell the user to run `resume-kit-init` first and stop.
 
 Read `<data_dir>/02_career-db/career.yaml` in full, plus
-`../../schema/career-schema.md` (relative to this skill, in the resume-kit
+`<data_dir>/_config/career-schema-full.md` (repo copy: `../../schema/career-schema.md`, in the resume-kit
 repo) for the `evidence_type` rules that govern what you may state as fact.
 Read any reflections under `<data_dir>/02_career-db/self/reflections/` that
 belong to experiences relevant to this posting. The reflections are where
