@@ -42,6 +42,27 @@ something to attach to, and stop. If they have no documents to ingest, you
 can proceed, but say plainly that you are building the record from scratch
 by interview and it will take several sessions.
 
+## Life-update check (runs first, every time)
+
+Before anything else, read `<data_dir>/02_career-db/self/life-log.md` and look
+at the date on the top entry.
+
+- **Under 2 months old:** say nothing, carry on.
+- **2 months old or more, or the log is empty:** ask, before doing the work
+  you were called for:
+
+  > What are you up to right now, or what have you been up to?
+
+  Take the answer as it comes. Write it to `life-log.md` as a new dated entry
+  at the top, in their words. Then file what it contains: concrete events as
+  `self-reported` material in `career.yaml`, opinions about themselves as
+  `self-assessment`, anything worth a longer telling as a file in
+  `02_career-db/self/reflections/`. If it opens up more than one question,
+  say so and suggest `career-enrich` rather than turning this into a full
+  interview.
+
+One question. Then get on with the task.
+
 ## Workflow
 
 1. **Assess the record and say what you find, honestly.** Walk

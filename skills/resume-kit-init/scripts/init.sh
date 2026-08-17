@@ -253,6 +253,8 @@ seed_from_repo "$REPO_DIR/templates/theme.css"            "$DATA_DIR/_config/the
 seed_from_repo "$REPO_DIR/templates/resume-template.html" "$DATA_DIR/_config/resume-template.html"
 seed_from_repo "$REPO_DIR/schema/interview-bank.md"       "$DATA_DIR/_config/interview-bank.md"
 seed_from_repo "$REPO_DIR/schema/career-schema.md"        "$DATA_DIR/_config/career-schema-full.md"
+seed_from_repo "$REPO_DIR/templates/life-log.md"           "$DATA_DIR/02_career-db/self/life-log.md"
+seed_from_repo "$REPO_DIR/templates/workspace-CLAUDE.md"   "$DATA_DIR/CLAUDE.md"
 
 write_if_absent "$DATA_DIR/_config/schema.md" <<'EOF'
 # career.yaml schema (v2)

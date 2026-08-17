@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-17 14:22 - Life-update log, and docs split into human-facing and agent-facing
+A career record goes stale quietly: someone changes roles or ships something big and none
+of it reaches career.yaml because nobody sat down to do an interview. Added a life log at
+`02_career-db/self/life-log.md` that answers one recurring question, "What are you up to
+right now, or what have you been up to?", as dated entries in the person's own words. All
+four working skills now check it before doing anything else: under two months old they say
+nothing, at two months or older (or empty) they ask the question first, write the answer,
+and file what it contains by evidence type. One question, not an interview; if the answer
+opens up more, the skill points at career-enrich rather than expanding the check-in.
+
+Split the documentation by audience. README.md is now written for humans and leads with
+what the tool does for you rather than how it is built, with the architecture condensed
+into one section at the bottom. Two CLAUDE.md files carry the agent-facing rules: one at
+the repo root for agents working on the tool (templates are seeds not live format, skills
+and contracts must never disagree, the evidence model and why not to weaken it), and one
+seeded into every workspace so an agent that opens a career folder gets the read order,
+the life-log check, and the eight standing rules without being told. That second one
+matters most on surfaces where the skills are not installed, since CLAUDE.md auto-loads
+from a working directory. Verified a fresh scaffold now produces both the life log and the
+workspace CLAUDE.md.
+Files: templates/life-log.md, templates/workspace-CLAUDE.md, CLAUDE.md, README.md,
+skills/resume-kit-init/scripts/init.sh, skills/career-ingest/SKILL.md,
+skills/career-enrich/SKILL.md, skills/career-target/SKILL.md, skills/resume-build/SKILL.md.
+
 ## 2026-08-17 13:58 - Workspace is now self-contained, so it works on surfaces that cannot reach the repo
 The workspace pointed at `~/Desktop/resume-kit` by absolute path for `theme.css`,
 `resume-template.html`, and `interview-bank.md`. Opening the data folder on a surface
