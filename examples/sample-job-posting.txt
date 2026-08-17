@@ -1,0 +1,21 @@
+Senior Backend Engineer — Platform Reliability
+Company: Delta Freight Systems
+
+We're looking for a senior backend engineer to own the reliability of our
+event-driven order processing pipeline. You'll work primarily in Python,
+with heavy use of Kafka for streaming, and Postgres for durable state.
+
+What you'll do:
+- Own and improve the reliability of a high-throughput event-driven
+  pipeline (Kafka-based).
+- Reduce error rates and processing latency in mission-critical
+  reconciliation workflows.
+- Mentor engineers on the team and help establish on-call/reliability
+  practices.
+
+What we're looking for:
+- 5+ years backend engineering experience, Python preferred.
+- Direct experience with Kafka or similar event-streaming systems.
+- Track record of measurably improving reliability or performance
+  (numbers, not adjectives).
+- Comfortable mentoring other engineers.
