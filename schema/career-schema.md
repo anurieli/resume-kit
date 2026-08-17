@@ -35,7 +35,7 @@ experiences:
       - text: "Led migration of the billing pipeline to event-driven architecture, cutting reconciliation errors 40%."
         tags: [python, distributed-systems, leadership]
         metric: "40% error reduction"          # optional, pulled out for easy scanning
-        source: "inbox/old-resume-2022.pdf"    # provenance: where this fact came from
+        source: "01_intake/old-resume-2022.pdf"  # provenance: where this fact came from
       - text: "..."
         tags: [...]
         source: "..."
@@ -47,7 +47,7 @@ education:
     start: "2013-09"
     end: "2017-05"
     tags: [cs-fundamentals]
-    source: "inbox/old-resume-2022.pdf"
+    source: "01_intake/old-resume-2022.pdf"
 
 projects:
   - id: proj-side-thing
@@ -83,12 +83,12 @@ meta:
 
 ## Rules for anything that writes to this file
 
-1. **Never fabricate.** Every fact traces back to a `source:` — a file in
-   `inbox/`, or a direct answer the user gave when asked a clarifying
+1. **Never fabricate.** Every fact traces back to a `source:`: a file in
+   `01_intake/`, or a direct answer the user gave when asked a clarifying
    question (in which case `source: "user-confirmed 2026-08-17"`).
 2. **Dedupe by (company, title, overlapping dates), not by exact text
    match.** The same job described differently across two old resumes is
-   ONE experience entry with a merged, deduplicated achievement list — not
+   ONE experience entry with a merged, deduplicated achievement list, not
    two entries.
 3. **When something doesn't fit the schema or is ambiguous** (conflicting
    dates for the same job, a title that doesn't map cleanly, an achievement

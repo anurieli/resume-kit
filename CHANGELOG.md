@@ -1,5 +1,40 @@
 # Changelog
 
+## 2026-08-17 12:52 - Data directory restructured as an ICM workspace, plus a config-clobbering fix
+The data directory was a flat folder (career.yaml, inbox/, output/), which meant the
+only way to use the tool was to name a skill: an agent landing in the folder cold had
+nothing telling it what to do. Restructured it into an ICM (Interpretable Context
+Methodology) workspace: IDENTITY.md and a routing CONTEXT.md at the root, `_config/`
+for stable reference, and four numbered stages (01_intake, 02_career-db, 03_target,
+04_deliverable) each carrying a CONTEXT.md contract. That adds a second activation
+path: drop a file into a stage folder and any agent can read the contract and continue,
+no skill call and no memory of prior sessions needed. The three skills stay as the
+explicit-call path and now reference the stage paths; init.sh scaffolds the whole
+structure so the public repo ships it.
+
+Fixed a footgun found while testing: init.sh unconditionally rewrote
+~/.config/resume-kit/config.yaml, so running it against a second directory silently
+repointed the tool away from a user's real career data. The "ask first" guard existed
+only in the skill's prose, not the script. It now refuses to repoint an existing config
+at a different directory unless RESUME_KIT_FORCE_CONFIG=1, while still scaffolding the
+requested workspace. Verified: fresh scaffold produces 8 files, re-runs preserve a
+filled career.yaml and hand-edited contracts, the config guard holds in both directions,
+and every path referenced by a contract or skill exists.
+Files: skills/resume-kit-init/scripts/init.sh, skills/resume-kit-init/SKILL.md,
+skills/resume-ingest/SKILL.md, skills/resume-build/SKILL.md, schema/career-schema.md,
+README.md.
+
+## 2026-08-17 12:38 - The format is now an editable template, not a thing the model redraws (57aa365)
+resume-build was told to use the template as a "structural/style reference," which meant
+it regenerated CSS from scratch each run and formatting could drift between resumes.
+Extracted the CSS into templates/theme.css as the single source of truth, moved templates/
+to the repo root where it is discoverable, and changed the skill's contract to require
+inlining theme.css verbatim with an explicit ban on per-job restyling. Added
+templates/README.md documenting which file to edit for which change. Verified by
+rendering through the new path and diffing extracted text against the original: identical.
+Files: templates/theme.css, templates/resume-template.html, templates/README.md,
+skills/resume-build/SKILL.md.
+
 ## 2026-08-17 12:24 - render-pdf.sh no longer hangs after a successful render (dbfca39)
 Headless Chrome (`--headless=new`) writes the PDF correctly but does not reliably exit
 the process afterward on macOS, so the original script's `wait`-on-exit approach hung

@@ -6,30 +6,43 @@ description: "Build a tailored resume PDF for a specific job from the resume-kit
 # resume-build
 
 Turns a job posting plus the career database into one tailored, consistently
-formatted resume PDF. Every run produces the same visual format — what
+formatted resume PDF. Every run produces the same visual format. What
 changes is which experience gets selected and how it's emphasized, never the
 layout.
+
+This skill runs stages `03_target` and `04_deliverable` of the resume-kit
+ICM workspace. The stage contracts at `<data_dir>/03_target/CONTEXT.md` and
+`<data_dir>/04_deliverable/CONTEXT.md` say the same thing in short form, so
+the user can also just drop a posting into `03_target/` and ask an agent to
+continue without naming this skill. Keep the two in sync: if you change a
+rule here, change it in the contract too.
 
 ## Before starting
 
 Read `~/.config/resume-kit/config.yaml` for `data_dir`. If missing, tell the
-user to run `resume-kit-init` first and stop. Read `<data_dir>/career.yaml`.
-If it's empty or has no `experiences:`, tell the user to run `resume-ingest`
-first.
+user to run `resume-kit-init` first and stop. Read
+`<data_dir>/02_career-db/career.yaml`. If it's empty or has no
+`experiences:`, tell the user to run `resume-ingest` first.
 
 ## Workflow
 
-1. **Get the job posting.** Accept pasted text, a URL (fetch it), or a file
-   path. Extract: target title, company, key responsibilities, and the
-   skills/technologies it emphasizes.
+1. **Capture the job posting (stage `03_target`).** Accept pasted text, a
+   URL (fetch it), or a file path. Build the slug `<company>-<role>`,
+   lowercase and hyphenated, and use that same slug through stage 04.
+   - Write the posting verbatim to
+     `<data_dir>/03_target/output/<slug>/posting.md`. Don't summarize here;
+     postings get taken down and the raw text is the record.
+   - Write `<data_dir>/03_target/output/<slug>/brief.md` with four sections:
+     target title, company, emphasized skills and technologies, key
+     responsibilities. Keep it to the posting's own claims.
 2. **Select relevant material from `career.yaml`:**
    - Rank experiences by relevance to the posting (tag overlap with the
-     posting's emphasized skills, plus recency — don't bury a highly
+     posting's emphasized skills, plus recency. Don't bury a highly
      relevant older role under a less relevant recent one, but don't
      resurrect something a decade stale over recent equivalent experience).
    - Within a selected experience, include the achievements most relevant
      to the posting first. Don't include every achievement ever logged for
-     a role — that's what makes it "tailored" rather than a dump of the
+     a role. That's what makes it "tailored" rather than a dump of the
      full database.
    - Pull skills for the Skills section from `career.yaml skills:`,
      prioritized by relevance to the posting, not just by `confidence`.
@@ -37,14 +50,15 @@ first.
      rewording that doesn't change its meaning.** This skill selects and
      orders; it does not invent achievements, dates, or skills to better
      match the posting. If the posting wants something genuinely missing
-     from the database, leave it out — don't fabricate it — and mention
+     from the database, leave it out, don't fabricate it, and mention
      the gap to the user in your summary at the end.
 3. **Write a tailored summary** (2-3 sentences) grounded in
    `person.summary`, angled toward this posting, without inventing claims
    not supported elsewhere in `career.yaml`.
-4. **Build the HTML.** Write a fresh, fully-populated HTML file to
-   `<data_dir>/output/<company-slug>-<role-slug>-<YYYY-MM-DD>/resume.html`,
-   built from the repo's `templates/` folder:
+4. **Build the HTML (stage `04_deliverable`).** Write a fresh,
+   fully-populated HTML file to
+   `<data_dir>/04_deliverable/output/<slug>/resume.html`, built from the
+   repo's `templates/` folder:
    - **Read `templates/theme.css` and inline its full contents verbatim**
      into the output's `<style>` block. Do not rewrite, reformat, tune, or
      "improve" any rule, and do not add styles of your own. This file is
@@ -55,24 +69,27 @@ first.
      `.entry-title`, `.entry-org`, `.entry-dates`, `.entry-loc`,
      `ul.bullets`, `.skills-list`), repeating the `.entry` block per
      selected experience.
-   - If the user has edited either file, those edits are the format now —
-     follow them; never revert to what's described here.
+   - If the user has edited either file, those edits are the format now.
+     Follow them, and never revert to what's described here.
    Keep it to one page unless the person has substantial (12+ years)
    directly relevant experience.
 5. **Render to PDF:**
    ```bash
    ~/Desktop/resume-kit/skills/resume-build/scripts/render-pdf.sh \
-     "<data_dir>/output/<slug>/resume.html" \
-     "<data_dir>/output/<slug>/resume.pdf"
+     "<data_dir>/04_deliverable/output/<slug>/resume.html" \
+     "<data_dir>/04_deliverable/output/<slug>/resume.pdf"
    ```
-   (Adjust the repo path to wherever resume-kit was cloned.)
+   (Adjust the repo path to wherever resume-kit was cloned, or read
+   `repo_dir` from `~/.config/resume-kit/config.yaml`.) This step needs
+   shell access, since it drives headless Chrome. On a surface without a
+   shell, stop after `resume.html` and tell the user the PDF is pending.
 6. **Verify.** Confirm the PDF exists and is a single reasonable page count
    (1-2 pages). If `pdftoppm` is available, spot-check by rendering to PNG
-   and reading it — confirm nothing overflows or looks cramped.
-7. **Report to the user**: which experiences/achievements were selected and
-   why, any gap between what the posting wants and what's in the database
-   (don't paper over this — it's useful signal for what to add next time),
-   and the output path.
+   and reading it: confirm nothing overflows or looks cramped.
+7. **Report to the user**: which experiences and achievements were selected
+   and why, any gap between what the posting wants and what's in the
+   database (don't paper over this, it's useful signal for what to add next
+   time), and the output path.
 
 ## Don't
 
@@ -80,7 +97,7 @@ first.
   with the posting than the source material supports.
 - Don't change the format per job. Content is tailored; format never is.
   If a job "would look better" with different styling, that instinct is
-  wrong — the consistency is the product. A genuine format change belongs
+  wrong. The consistency is the product. A genuine format change belongs
   in `templates/theme.css`, applied to all future resumes, not to one
   output.
 - Don't dump the entire career database into one resume. Tailoring means
