@@ -42,11 +42,21 @@ first.
 3. **Write a tailored summary** (2-3 sentences) grounded in
    `person.summary`, angled toward this posting, without inventing claims
    not supported elsewhere in `career.yaml`.
-4. **Build the HTML.** Use `templates/resume-template.html` as the
-   structural/style reference — same fonts, spacing, section order, and
-   CSS — and write a fresh, fully-populated HTML file (not the template
-   itself) to
-   `<data_dir>/output/<company-slug>-<role-slug>-<YYYY-MM-DD>/resume.html`.
+4. **Build the HTML.** Write a fresh, fully-populated HTML file to
+   `<data_dir>/output/<company-slug>-<role-slug>-<YYYY-MM-DD>/resume.html`,
+   built from the repo's `templates/` folder:
+   - **Read `templates/theme.css` and inline its full contents verbatim**
+     into the output's `<style>` block. Do not rewrite, reformat, tune, or
+     "improve" any rule, and do not add styles of your own. This file is
+     the format; copying it unchanged is what keeps every resume this tool
+     produces visually identical.
+   - **Follow `templates/resume-template.html` for structure**: the same
+     section order, the same class names (`.entry`, `.entry-head`,
+     `.entry-title`, `.entry-org`, `.entry-dates`, `.entry-loc`,
+     `ul.bullets`, `.skills-list`), repeating the `.entry` block per
+     selected experience.
+   - If the user has edited either file, those edits are the format now —
+     follow them; never revert to what's described here.
    Keep it to one page unless the person has substantial (12+ years)
    directly relevant experience.
 5. **Render to PDF:**
@@ -68,8 +78,10 @@ first.
 
 - Don't invent, exaggerate, or reword an achievement to sound more aligned
   with the posting than the source material supports.
-- Don't change the visual template per job — the whole point is that every
-  resume this produces looks consistently like the same person's resume,
-  just with different selected content.
+- Don't change the format per job. Content is tailored; format never is.
+  If a job "would look better" with different styling, that instinct is
+  wrong — the consistency is the product. A genuine format change belongs
+  in `templates/theme.css`, applied to all future resumes, not to one
+  output.
 - Don't dump the entire career database into one resume. Tailoring means
   selecting, not including everything "just in case."

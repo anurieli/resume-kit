@@ -1,0 +1,106 @@
+/* ============================================================
+   resume-kit theme
+   ============================================================
+   THIS FILE IS THE FORMAT. Edit it to change how every resume
+   this tool produces looks.
+
+   resume-build copies this file VERBATIM into each generated
+   resume's <style> block. It never rewrites, restyles, or
+   "improves" these rules. That is what makes every resume come
+   out looking like the same document with different content.
+
+   Want a different look? Change it here, once. Every future
+   resume picks it up. Don't restyle individual outputs.
+
+   The knobs most people actually want:
+     --ink        main text color
+     --muted      secondary text (dates, company, location)
+     --accent     currently unused by default; wire it into
+                  h1/h2 if you want a colored resume
+     --rule       the thin line under section headings
+     body font-family / font-size
+     @page margin
+   ============================================================ */
+
+@page {
+  size: Letter;
+  margin: 0.6in 0.7in;
+}
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #55595e;
+  --rule: #d8d8d8;
+  --accent: #1a1a1a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  font-size: 10.5pt;
+  line-height: 1.45;
+}
+
+/* --- header ------------------------------------------------ */
+
+h1 {
+  font-size: 20pt;
+  margin: 0 0 2px;
+  letter-spacing: 0.2px;
+}
+
+.headline {
+  font-size: 11pt;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+.contact {
+  font-size: 9pt;
+  color: var(--muted);
+  margin: 0 0 14px;
+}
+.contact a { color: var(--muted); text-decoration: none; }
+.contact span + span::before { content: " · "; }
+
+/* --- section headings -------------------------------------- */
+
+h2 {
+  font-size: 10.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 3px;
+  margin: 16px 0 8px;
+  color: var(--ink);
+}
+h2:first-of-type { margin-top: 0; }
+
+/* --- body content ------------------------------------------ */
+
+.summary { margin: 0 0 4px; color: var(--ink); }
+
+.entry {
+  margin-bottom: 10px;
+  page-break-inside: avoid;  /* never split one job across pages */
+}
+
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.entry-title { font-weight: 700; }
+.entry-org { font-weight: 400; color: var(--muted); }
+.entry-dates { font-size: 9pt; color: var(--muted); white-space: nowrap; }
+.entry-loc { font-size: 9pt; color: var(--muted); }
+
+ul.bullets { margin: 4px 0 0; padding-left: 16px; }
+ul.bullets li { margin-bottom: 2px; }
+
+.skills-list { margin: 0; color: var(--ink); }

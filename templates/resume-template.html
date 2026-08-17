@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>{{PERSON_NAME}} — Resume</title>
+<style>
+/* resume-build inlines the full contents of theme.css here, verbatim.
+   Do not restyle per resume. Edit templates/theme.css instead. */
+</style>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <h1>{{PERSON_NAME}}</h1>
+  <div class="headline">{{HEADLINE}}</div>
+  <div class="contact">
+    <span>{{LOCATION}}</span><span>{{EMAIL}}</span><span>{{PHONE}}</span><span><a href="{{LINK_URL}}">{{LINK_LABEL}}</a></span>
+  </div>
+
+  <!-- ============ SUMMARY ============ -->
+  <h2>Summary</h2>
+  <p class="summary">{{SUMMARY_TAILORED}}</p>
+
+  <!-- ============ EXPERIENCE ============
+       Repeat one .entry block per selected experience, most
+       recent first. Omit .entry-loc if there's no location. -->
+  <h2>Experience</h2>
+
+  <div class="entry">
+    <div class="entry-head">
+      <div><span class="entry-title">{{TITLE}}</span> <span class="entry-org">— {{COMPANY}}</span></div>
+      <div class="entry-dates">{{START}} – {{END}}</div>
+    </div>
+    <div class="entry-loc">{{LOCATION}}</div>
+    <ul class="bullets">
+      <li>{{ACHIEVEMENT_TEXT}}</li>
+      <!-- one <li> per selected achievement -->
+    </ul>
+  </div>
+
+  <!-- ============ EDUCATION ============
+       Same .entry structure, usually without bullets. -->
+  <h2>Education</h2>
+
+  <div class="entry">
+    <div class="entry-head">
+      <div><span class="entry-title">{{DEGREE}}</span> <span class="entry-org">— {{INSTITUTION}}</span></div>
+      <div class="entry-dates">{{START}} – {{END}}</div>
+    </div>
+  </div>
+
+  <!-- ============ OPTIONAL SECTIONS ============
+       Projects and Certifications use the same <h2> + .entry
+       pattern. Include them only when they're relevant to the
+       target job and there's room. -->
+
+  <!-- ============ SKILLS ============ -->
+  <h2>Skills</h2>
+  <p class="skills-list">{{COMMA_SEPARATED_RELEVANT_SKILLS}}</p>
+
+</body>
+</html>
