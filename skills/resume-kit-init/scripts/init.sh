@@ -557,19 +557,26 @@ apply, with a reason and a list of what would change it, is an answer.
    role over recent equivalent experience. Include the most relevant
    achievements per role, not every one logged. Prefer `documented` ones
    carrying a `metric`.
-5. **What may be printed** (see `../_config/format.md`): `documented` and
+5. **Honor `meta.presentation_preferences`** if `career.yaml` carries any.
+   That is the person's own judgment about conventions in their field, so it
+   governs framing and ordering. It cannot promote a skill no role or project
+   carries, and it cannot suppress something the posting explicitly requires:
+   name that conflict rather than resolving it silently. A skills line of
+   bare tool names is the weakest version of that section; group by
+   capability and put the tools inside the groups.
+6. **What may be printed** (see `../_config/format.md`): `documented` and
    `self-reported` may appear. `self-assessment` shapes selection and wording
    and is never printed as a claim. `derived` is internal; skill names may be
    listed, confidence levels and evidence counts may not.
-6. Every fact comes from `career.yaml` verbatim or reworded without changing
+7. Every fact comes from `career.yaml` verbatim or reworded without changing
    its meaning. Never invent to close a gap, never promote evidence to make a
    bullet land harder. Leave it out and report the gap.
-7. Write `resume.html` into the dated folder, opening with a 2 to 3 sentence
+8. Write `resume.html` into the dated folder, opening with a 2 to 3 sentence
    summary grounded in `person.summary` and angled at this posting. Inline
    `theme.css` verbatim into the `<style>` block and follow
    `resume-template.html` for section order and class names. Edits to those
    files are the format now.
-8. Render the PDF with
+9. Render the PDF with
    `@@REPO_DIR@@/skills/resume-build/scripts/render-pdf.sh <html> <pdf>`. It
    drives headless Chrome, so a surface without a shell stops after
    `resume.html` and reports the PDF as pending. Verify the result runs 1 to

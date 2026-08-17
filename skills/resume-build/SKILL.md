@@ -122,6 +122,18 @@ One question. Then get on with the task.
      above. Never as a bullet.
    - Pull skills for the Skills section from `career.yaml skills:`,
      prioritized by relevance to the posting, not just by `confidence`.
+   - **Honor `meta.presentation_preferences` if it exists.** A person may
+     have decided that some class of skill reads as dated in their market,
+     or that a capability framing beats a tool list. That is their call
+     about their own field, so follow it even when the raw tags would
+     suggest otherwise. It governs framing and ordering only. It cannot
+     promote a skill that no role or project carries, and it cannot
+     suppress something the posting explicitly requires: name that
+     conflict in your summary instead of quietly resolving it.
+   - A skills list of bare tool names is the weakest version of this
+     section. Where the record supports it, group by what the person can
+     do and put the tools inside the group. `skills:` is a set of tags,
+     not a sentence, so it is on you to render it as one.
    - **Every fact used must come from `career.yaml` verbatim or a light
      rewording that doesn't change its meaning.** This skill selects and
      orders; it does not invent achievements, dates, or skills to better

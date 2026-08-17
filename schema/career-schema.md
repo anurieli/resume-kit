@@ -125,9 +125,23 @@ meta:
   schema_version: 2
   last_ingested: "2026-08-17"
   last_enriched: "2026-08-17"
+
+  presentation_preferences:        # optional. How this person wants the
+    - "Lead with systems design, not a language list."   # record framed.
+
   enrichment_gaps:                 # what career-enrich should ask about next
     - "exp-fernhill-2018 has no reflections and no metrics."
 ```
+
+`presentation_preferences` is the one place a person's opinion about their
+own field gets to shape output. Conventions differ by industry and they
+change, so a person saying "listing languages reads as dated where I work"
+is information the tool does not otherwise have. `resume-build` follows it.
+
+It governs framing and ordering only. It cannot promote a skill no role or
+project carries, and it cannot suppress something a posting explicitly
+requires: that conflict gets named to the user, not quietly resolved. Write
+entries here only when the person states the preference; never infer one.
 
 ## Rules for anything that writes to this file
 
