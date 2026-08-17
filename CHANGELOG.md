@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-17 16:05 - A person's field conventions can now shape output (8c45db0)
+resume-build could only rank skills by tag relevance and confidence, so it rendered a flat
+comma-separated list of tool names. That is the weakest version of the section, and in some
+fields a programming-language list actively reads as dated, but the record had nowhere to
+carry that judgment. Added an optional `meta.presentation_preferences` list: framing and
+ordering only, so it can never promote a skill that no role or project carries, and never
+suppress something a posting explicitly requires. That conflict gets named to the user
+instead of resolved silently. Preferences are recorded only when the person states one,
+never inferred. Documented in the schema, honored in resume-build, and mirrored into the
+04_deliverable contract inside init.sh so the skill and the contract cannot drift.
+Files: schema/career-schema.md, skills/resume-build/SKILL.md, skills/resume-kit-init/scripts/init.sh.
+
 ## 2026-08-17 14:22 - Life-update log, and docs split into human-facing and agent-facing
 A career record goes stale quietly: someone changes roles or ships something big and none
 of it reaches career.yaml because nobody sat down to do an interview. Added a life log at
