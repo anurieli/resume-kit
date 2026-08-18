@@ -169,28 +169,52 @@ One question. Then get on with the task.
    directly relevant experience.
 6. **Render to PDF:**
    ```bash
-   ~/Desktop/resume-kit/skills/resume-build/scripts/render-pdf.sh \
+   <repo_dir>/skills/resume-build/scripts/render-pdf.sh \
      "<data_dir>/04_deliverable/output/<YYYY-MM-DD>-<slug>/resume.html" \
-     "<data_dir>/04_deliverable/output/<YYYY-MM-DD>-<slug>/resume.pdf"
+     "<data_dir>/04_deliverable/output/<YYYY-MM-DD>-<slug>/<Person Name> - Resume.pdf"
    ```
-   (Adjust the repo path to wherever resume-kit was cloned, or read
-   `repo_dir` from `~/.config/resume-kit/config.yaml`.) This step needs
+   The PDF carries the name the employer sees, in the same folder as the
+   HTML it renders from. Read `repo_dir` from
+   `~/.config/resume-kit/config.yaml`. This step needs
    shell access, since it drives headless Chrome. On a surface without a
    shell, stop after `resume.html` and tell the user the PDF is pending.
 7. **Verify.** Confirm the PDF exists and is a single reasonable page count
    (1-2 pages). If `pdftoppm` is available, spot-check by rendering to PNG
    and reading it: confirm nothing overflows or looks cramped.
-8. **Build the submission kit.** In the dated folder, write
-   `SUBMISSION-KIT.md` and a `submission/` subfolder:
-   - `submission/` holds the send-ready file, named as the employer will see
-     it: `<Person Name> - Resume.pdf`. The working `resume.html` and
-     `resume.pdf` stay in the dated folder. One folder to open when it is
-     time to actually apply.
-   - `SUBMISSION-KIT.md` covers: what to send, what is here for the person
-     rather than the employer (positioning, posting, brief, with links), how
-     the resume was angled for this posting, the known risk a screener will
-     hit, and what to do once it is sent.
-9. **Promote it, and log it.** Copy the finished PDF and HTML to
+8. **Read the actual application form, not only the posting.** Open the
+   apply page. Most forms take more than an upload: mandatory free-text
+   essays, a salary field, LinkedIn and portfolio links. When a form asks
+   for essays, **those essays are where the application is judged**, and
+   they deserve more effort than the resume did.
+   - Capture every field verbatim into `APPLICATION-ANSWERS.md` in the dated
+     folder, marking which are mandatory.
+   - Fill in the mechanical fields from `career.yaml`.
+   - Draft each essay from the record, and **where the record runs out, stop
+     and say so.** Do not write a plausible answer to cover a gap. That is
+     the one failure mode this whole workspace exists to prevent, and a bank
+     or a technical screener will find it in the interview.
+   - List what is missing as specific questions for the person, ordered by
+     how much each one unblocks. Say that the answers belong in
+     `career.yaml` via `career-enrich`, so the next application benefits too.
+   - If the form is behind a bot-blocked page, read it through a browser.
+9. **Write the cover letter** when the application takes one. Same theme,
+   inlined verbatim, following
+   `<data_dir>/_config/cover-letter-template.html`. Render it to
+   `<Person Name> - Cover Letter.pdf` next to the resume. It leads with the
+   single most relevant engagement in the record, in the employer's
+   vocabulary, and it answers the question the record raises that the
+   posting does not ask. `positioning.md` usually names that question.
+10. **Build the submission kit.** The dated folder **is** the kit. There is
+   no `submission/` subfolder.
+   - Name the send-ready PDFs as the employer sees them:
+     `<Person Name> - Resume.pdf`, `<Person Name> - Cover Letter.pdf`. They
+     sit in the dated folder beside the `.html` they render from. HTML is
+     the source, PDF is the render, and nobody edits a PDF.
+   - `SUBMISSION-KIT.md` covers: what goes to them, what stays for the
+     person (positioning, posting, brief, with links), how this folder
+     compiles from `career.yaml` plus the brief, how the resume was angled,
+     the known risks a screener will hit, and what to do once it is sent.
+11. **Promote it, and log it.** Copy the finished PDF and HTML to
    `<data_dir>/CURRENT-RESUME.pdf` and `<data_dir>/CURRENT-RESUME.html`.
    That pair is always the newest finalized resume, so anyone who just needs
    "the resume" takes it without reading the archive. Copies, not symlinks,
@@ -205,7 +229,20 @@ One question. Then get on with the task.
      folder and its row; being archived just means no longer being newest.
    - Only the person overrides this. Do not unfreeze a sent resume, and do
      not overwrite `CURRENT-RESUME.pdf` with an unfinished draft.
-10. **Report to the user**: which experiences and achievements were selected
+12. **The general resume is the one build with no employer.** When the
+   person asks for a general resume rather than one for a posting, skip
+   steps 1, 2, 8, 9, and 10 entirely: no posting, no brief, no positioning,
+   no kit, because there is nobody to angle it at. Build it from the current
+   record into `<data_dir>/04_deliverable/output/<YYYY-MM-DD>-general/`, then
+   promote it to `<data_dir>/GENERAL-RESUME.pdf` and `.html` and give it a
+   ledger row marked **general**.
+   - It never promotes to `CURRENT-RESUME.pdf`, and a tailored build never
+     overwrites it. They coexist and answer different questions.
+   - Rebuild it when `career.yaml` gains something material, on purpose. It
+     does not refresh as a side effect of a tailored build.
+   - It is broader on purpose: the roles a tailored build trims for space
+     belong back on it.
+13. **Report to the user**: which experiences and achievements were selected
    and why, any gap between what the posting wants and what's in the
    database (don't paper over this, it's useful signal for what to add next
    time), and the output path. If a gap looks like something the person

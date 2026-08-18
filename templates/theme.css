@@ -104,3 +104,18 @@ ul.bullets { margin: 4px 0 0; padding-left: 16px; }
 ul.bullets li { margin-bottom: 2px; }
 
 .skills-list { margin: 0; color: var(--ink); }
+
+/* --- cover letter ------------------------------------------- */
+/* Same masthead, same type, so the letter and the resume read as
+   one set of documents when they land in the same inbox. Used by
+   _config/cover-letter-template.html. */
+
+.letter {
+  margin: 20px 0 0;
+  font-size: 10.5pt;
+  line-height: 1.5;
+  max-width: 6.4in;
+}
+.letter .date { color: var(--muted); margin: 0 0 16px; }
+.letter p { margin: 0 0 11px; }
+.letter .signoff { margin: 16px 0 0; }

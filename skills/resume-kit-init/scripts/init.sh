@@ -200,7 +200,7 @@ one view of it.
 | Old resumes, LinkedIn export, performance reviews, offer letters | `01_intake/` | `career-ingest` | files consumed into `01_intake/output/processed/` |
 | Documents just consumed, or something to say about a job | `02_career-db/` | `career-ingest`, `career-enrich` | updated `career.yaml`, reflections, a run report |
 | A job posting, and the question of whether to apply | `03_target/` | `career-target` | `output/<slug>/posting.md` and `brief.md` |
-| A captured target plus a filled `career.yaml` | `04_deliverable/` | `career-target`, `resume-build` | `output/<YYYY-MM-DD>-<slug>/positioning.md`, `resume.html`, `resume.pdf` |
+| A captured target plus a filled `career.yaml` | `04_deliverable/` | `career-target`, `resume-build` | `output/<YYYY-MM-DD>-<slug>/`: `positioning.md`, the resume, a cover letter, `APPLICATION-ANSWERS.md`, `SUBMISSION-KIT.md` |
 
 Two activation paths, same contracts:
 
@@ -251,6 +251,7 @@ seed_from_repo() {
 
 seed_from_repo "$REPO_DIR/templates/theme.css"            "$DATA_DIR/_config/theme.css"
 seed_from_repo "$REPO_DIR/templates/resume-template.html" "$DATA_DIR/_config/resume-template.html"
+seed_from_repo "$REPO_DIR/templates/cover-letter-template.html" "$DATA_DIR/_config/cover-letter-template.html"
 seed_from_repo "$REPO_DIR/schema/interview-bank.md"       "$DATA_DIR/_config/interview-bank.md"
 seed_from_repo "$REPO_DIR/schema/career-schema.md"        "$DATA_DIR/_config/career-schema-full.md"
 seed_from_repo "$REPO_DIR/templates/life-log.md"           "$DATA_DIR/02_career-db/self/life-log.md"
@@ -318,9 +319,12 @@ The format lives HERE, in this workspace, and it is meant to be edited.
   order, and the class names each uses (`.entry`, `.entry-head`,
   `.entry-title`, `.entry-org`, `.entry-dates`, `.entry-loc`, `ul.bullets`,
   `.skills-list`).
+- **`cover-letter-template.html`** is the same masthead plus a `.letter`
+  block, so a letter and a resume that arrive in one inbox read as one set
+  of documents.
 
 **The rule that keeps output consistent:** `04_deliverable` inlines
-`theme.css` into each generated resume verbatim. It does not rewrite,
+`theme.css` into each generated resume and letter verbatim. It does not rewrite,
 reformat, tune, or extend it, and it adds no styles of its own. Content is
 tailored per job. Format never is.
 
@@ -347,10 +351,19 @@ failure this rule exists to prevent.
 
 ## Where deliverables land
 
-`04_deliverable/output/<YYYY-MM-DD>-<slug>/`, holding `positioning.md` from
-`career-target` and `resume.html` plus `resume.pdf` from `resume-build`. The
+`04_deliverable/output/<YYYY-MM-DD>-<slug>/`. One folder per application,
+and the folder is the whole submission: `positioning.md` from
+`career-target`, then from `resume-build` the send-ready PDFs named as the
+employer sees them, the `.html` they render from, `APPLICATION-ANSWERS.md`
+when the form asks for more than an upload, and `SUBMISSION-KIT.md`. The
 date prefix means applying to the same company twice leaves a history rather
 than an overwrite.
+
+The newest finalized build is copied to `CURRENT-RESUME.pdf` at the
+workspace root. Every build there is tailored to one posting, so it is not a
+general resume. `GENERAL-RESUME.pdf` beside it is the one aimed at nobody,
+built on purpose from `output/<YYYY-MM-DD>-general/`, and it is what to send
+when no role was named.
 EOF
 
 # ---------------------------------------------------------------- Layer 2
@@ -524,11 +537,14 @@ EOF
 write_if_absent "$DATA_DIR/04_deliverable/CONTEXT.md" <<'EOF'
 # 04_deliverable
 
-Two artifacts per application, in one dated folder:
-`output/<YYYY-MM-DD>-<slug>/`. `career-target` writes `positioning.md`
-(the coaching half). `resume-build` writes `resume.html` and `resume.pdf`
-(the document half). The date prefix means a second application to the same
-company leaves a history rather than an overwrite.
+One folder per application: `output/<YYYY-MM-DD>-<slug>/`. That folder is
+the whole submission. `career-target` writes `positioning.md` (the coaching
+half). `resume-build` writes the documents, named as the employer sees them,
+beside the HTML they render from. The date prefix means a second application
+to the same company leaves a history rather than an overwrite.
+
+An application is usually more than a resume. Read the actual form before
+deciding what this folder needs.
 
 Stopping after `positioning.md` is a legitimate outcome. Deciding not to
 apply, with a reason and a list of what would change it, is an answer.
@@ -581,31 +597,57 @@ apply, with a reason and a list of what would change it, is an answer.
    drives headless Chrome, so a surface without a shell stops after
    `resume.html` and reports the PDF as pending. Verify the result runs 1 to
    2 pages with nothing overflowing.
-10. **Build the submission kit.** In the dated folder, write
-    `SUBMISSION-KIT.md` plus a `submission/` subfolder holding the
-    send-ready file named as the employer will see it,
-    `<Name> - Resume.pdf`. The working `resume.html` and `resume.pdf` stay
-    in the dated folder. `SUBMISSION-KIT.md` covers what to send, what is
-    here for you rather than the employer, how the resume was angled, the
-    known risk, and what to do once it is sent.
-11. **Promote it, and log it.** Copy the finished PDF and HTML to
+10. **Read the actual application form**, not only the posting. Many take
+    more than an upload: mandatory free-text essays, a salary field, a
+    portfolio link. Those essays are usually where the application is
+    judged, so they outrank the resume in effort. Capture every field
+    verbatim into `APPLICATION-ANSWERS.md` in the dated folder, fill in what
+    `career.yaml` supports, and **where the record runs out, stop and say
+    so.** A plausible invented answer is the one failure mode this whole
+    workspace exists to prevent. List what is missing as questions for the
+    user, ordered by how much work each unblocks, and note that the answers
+    belong in `career.yaml` through `career-enrich` rather than only in the
+    deliverable.
+11. **Write the cover letter** when the application takes one. Same theme,
+    inlined verbatim, following `../_config/cover-letter-template.html`.
+    Render it to `<Name> - Cover Letter.pdf`. It leads with the single most
+    relevant engagement in the record, and it answers the question the
+    record raises that the posting does not ask.
+12. **Build the submission kit.** The dated folder **is** the kit; there is
+    no `submission/` subfolder. Name the send-ready PDFs as the employer
+    sees them, `<Name> - Resume.pdf` and `<Name> - Cover Letter.pdf`, beside
+    the `.html` they render from. Write `SUBMISSION-KIT.md` covering what
+    goes to them, what stays for the user, how the folder compiles from
+    `career.yaml` plus the brief, how the resume was angled, the known
+    risks, and what to do once it is sent.
+13. **Promote it, and log it.** Copy the finished PDF and HTML to
     `../CURRENT-RESUME.pdf` and `../CURRENT-RESUME.html` at the workspace
     root, and add a row to `output/index.md` naming the date and what it was
-    built for. `CURRENT-RESUME.pdf` is what anyone takes when they just need
-    "the resume". A build that has been sent is frozen: never edit,
-    re-render, or overwrite a dated folder after the fact, because it is the
-    record of what that company actually received. A newer build becomes
-    current; the old one keeps its folder and its row. Only the user
-    overrides this. Every resume here is tailored to one posting, so the
-    current one is not a general resume: keep `../CURRENT-RESUME.md`
-    accurate about what it was built for.
+    built for. A build that has been sent is frozen: never edit, re-render,
+    or overwrite a dated folder after the fact, because it is the record of
+    what that company actually received. A newer build becomes current; the
+    old one keeps its folder and its row. Only the user overrides this.
+    Every resume here is tailored to one posting, so the current one is not
+    a general resume: keep `../CURRENT-RESUME.md` accurate about what it was
+    built for.
+14. **The general resume is the one exception.** A build aimed at no
+    employer, from the current record, in `output/<YYYY-MM-DD>-general/`. It
+    promotes to `../GENERAL-RESUME.pdf` and `.html`, never to
+    `CURRENT-RESUME.pdf`, and it gets a ledger row marked **general**. It
+    has no posting, no brief, no positioning, and no kit, because there is
+    no employer. Rebuild it when `career.yaml` gains something material, on
+    purpose, never as a side effect of a tailored build.
 
 ## Outputs
-- `positioning.md`, `resume.html`, `resume.pdf` -> `output/<YYYY-MM-DD>-<slug>/`
-- `SUBMISSION-KIT.md` and `submission/<Name> - Resume.pdf` -> the dated folder
+- `positioning.md`, `resume.html` -> `output/<YYYY-MM-DD>-<slug>/`
+- `<Name> - Resume.pdf`, and `cover-letter.html` plus
+  `<Name> - Cover Letter.pdf` when the application takes one -> same folder
+- `APPLICATION-ANSWERS.md` when the form asks more than an upload
+- `SUBMISSION-KIT.md` -> same folder. The folder is the kit.
 - a copy of the finished resume -> `../CURRENT-RESUME.pdf` and `.html`
 - `../CURRENT-RESUME.md` updated with what it was built for
 - a row in `output/index.md`
+- for a general build only: `../GENERAL-RESUME.pdf` and `.html`
 
 ## Checkpoints
 - Read `positioning.md` before sending anything. The gap list is the part

@@ -45,7 +45,7 @@ walk the pipeline.
    is meant to be shared or published).
 3. **Run the scaffold script:**
    ```bash
-   ~/Desktop/resume-kit/skills/resume-kit-init/scripts/init.sh "<data_dir>"
+   ~/code/resume-kit/skills/resume-kit-init/scripts/init.sh "<data_dir>"
    ```
    (Adjust the path to wherever this repo was cloned.) It creates every
    folder and contract above, an empty schema v2 `career.yaml` at
@@ -56,7 +56,7 @@ walk the pipeline.
    `IDENTITY.md` is written with vault frontmatter and a breadcrumb:
    ```bash
    RESUME_KIT_VAULT_BREADCRUMB='[[06-Personal/index|Personal]]' \
-     ~/Desktop/resume-kit/skills/resume-kit-init/scripts/init.sh "<data_dir>"
+     ~/code/resume-kit/skills/resume-kit-init/scripts/init.sh "<data_dir>"
    ```
 5. **Confirm to the user** what was created, and point them at the next
    step, which depends on what they have:
