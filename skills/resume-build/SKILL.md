@@ -199,11 +199,17 @@ One question. Then get on with the task.
    - If the form is behind a bot-blocked page, read it through a browser.
 9. **Write the cover letter** when the application takes one. Same theme,
    inlined verbatim, following
-   `<data_dir>/_config/cover-letter-template.html`. Render it to
-   `<Person Name> - Cover Letter.pdf` next to the resume. It leads with the
-   single most relevant engagement in the record, in the employer's
-   vocabulary, and it answers the question the record raises that the
-   posting does not ask. `positioning.md` usually names that question.
+   `<data_dir>/_config/cover-letter-template.html`, including its voice
+   comment. Render it to `<Person Name> - Cover Letter.pdf` next to the
+   resume. It leads with the single most relevant engagement in the record,
+   in the employer's vocabulary, and it answers the question the record
+   raises that the posting does not ask. `positioning.md` usually names
+   that question. Voice: direct and out in the open, first person, no
+   bullshit, connect what the employer needs to what the person actually
+   offers, and include one honest admission, a real gap stated plainly
+   rather than a humble-brag. This is a per-person preference recorded in
+   `<data_dir>/_config/cover-letter-template.html`; don't assume it for a
+   workspace that hasn't set it.
 10. **Build the submission kit.** The dated folder **is** the kit. There is
    no `submission/` subfolder.
    - Name the send-ready PDFs as the employer sees them:
