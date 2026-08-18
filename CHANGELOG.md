@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-18 22:10 - Public on GitHub, with a walkthrough README (41eeea4)
+Pushed to https://github.com/anurieli/resume-kit under MIT, public, 23 files, no private data:
+the career record and every generated resume live in a separate data directory that this repo
+never sees. The README had explained what the tool does but never showed it doing anything, so
+it gained a four-step walkthrough using the fictional Jordan Rivera record already in examples/:
+ingest with a real evidence_type block, an interview exchange, a targeting read that names the
+gap and the cross-posting pattern, and the shape of the output folder. Plus a table explaining
+what each file in examples/ demonstrates and why it is there. Verified before pushing that
+nothing in the repo references the private workspace, a client, or a real person other than the
+MIT copyright line.
+Files: README.md, CHANGELOG.md.
+
 ## 2026-08-18 15:20 - Read the application form, not just the posting (7770ddf)
 The first real application exposed a hole in the workflow: the ONE ZERO posting asked for a
 resume, and the actual form asked for five mandatory free-text essays about one use case in
