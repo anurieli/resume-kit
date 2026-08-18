@@ -86,6 +86,98 @@ know exactly what you sent and what they asked for.
 
 ---
 
+## A walkthrough, start to finish
+
+There's a fictional person in `examples/` (Jordan Rivera, backend engineer)
+so you can see the shape of every artifact before you put your own life in
+one. Here's the whole loop.
+
+**1. Bootstrap from what you already have.**
+
+> **You:** *drops three old resumes and a 2023 performance review into
+> `01_intake/`* "Ingest these."
+>
+> **It:** Read 4 files. Found 2 roles, 9 achievements, 1 degree. The same
+> Northwind role appeared in all three resumes with different wording, kept
+> the longest version. Two achievements carry numbers, both from the
+> performance review, both marked `documented`. The Fernhill role has no
+> context and no numbers. Archived all 4 originals to
+> `01_intake/output/processed/`. This record is thin on purpose. Run
+> `career-enrich` next.
+
+Every claim it wrote looks like this in `career.yaml`:
+
+```yaml
+- text: "Led migration of the billing reconciliation pipeline to an
+    event-driven architecture, cutting reconciliation errors 40% and
+    processing time from 6 hours to 20 minutes."
+  tags: [python, distributed-systems, kafka]
+  evidence_type: documented
+  source: "2023-perf-review.pdf, p2"
+```
+
+`evidence_type` is the whole point. `documented` came from a file.
+`self-reported` is something you told it. `self-assessment` is your opinion
+of yourself, and it never gets printed as a fact about you.
+
+**2. Talk to it, occasionally.**
+
+> **You:** "Interview me."
+>
+> **It:** Your Fernhill role is two bullets with no numbers, and it's the
+> one a platform job would care about. Three questions. What was the team
+> size and who did you report to? What broke most often? Was there anything
+> you started that nobody asked you to start?
+
+Ramble for four minutes and it saves the whole account in your own words to
+`02_career-db/self/reflections/`, then files the extractable facts into
+`career.yaml` with a link back to the reflection. See
+`examples/sample-ramble.md` for what one looks like: why the project
+existed, who fought it, what was actually hard. None of that fits on a
+resume and all of it decides how the resume gets written.
+
+**3. Point it at a job.**
+
+> **You:** *pastes the Delta Freight posting* "Should I apply?"
+>
+> **It:** Apply. Strong match, one real gap.
+>
+> Lead with the Northwind billing migration. They want Kafka, measurable
+> reliability work, and mentoring, and you have documented numbers for the
+> first two. Your 40% error reduction is the strongest single line you own.
+>
+> The gap is on-call. They want someone who has established on-call
+> practice, and your record has you inside a rotation, not designing one.
+> Don't claim it. Say what you did build: the runbook that didn't exist.
+>
+> Kubernetes came up again. That's four of your last five targets. This is
+> not a one-off gap anymore, it's your ceiling on this class of role.
+
+That last paragraph is the thing you can't do for yourself. It keeps every
+posting you've ever pointed it at and reads across them.
+
+**4. Get the documents.**
+
+> **You:** "Build it."
+
+You get `04_deliverable/output/2026-08-18-delta-freight/` holding the
+resume as a PDF named the way the employer will see it, the HTML it
+rendered from, the posting, the positioning read, and a submission kit
+telling you what to upload. If the application takes a cover letter or has
+mandatory essay fields, those land in the same folder. Sent applications
+freeze, so a year from now you can still answer "what exactly did I tell
+them?"
+
+## What's in `examples/`
+
+| File | What it shows |
+|---|---|
+| `career.example.yaml` | A full record after one ingest and two interviews: mixed evidence types, a role that's still thin and flagged for it, derived skills, and the self-assessment block that never gets printed |
+| `sample-ramble.md` | A captured reflection, in the person's own words, with a note on which parts became facts and which didn't |
+| `sample-job-posting.txt` | The posting used in step 3 above, so you can run the targeting step end to end |
+
+Copy the shape, not the content.
+
 ## Two ways to run it
 
 **Say what you want.** "Ingest these." "Interview me." "Should I apply to
