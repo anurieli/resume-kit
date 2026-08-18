@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-18 14:32 - Sent resumes are frozen, the newest one is CURRENT-RESUME (8fb7145)
+Every build landed in a dated folder and stopped there, so "give me my resume" meant knowing
+which folder was newest, and nothing stopped an agent from re-rendering a resume that had
+already gone out. Added step 10 to resume-build and to the 04_deliverable contract generated
+by init.sh: copy the finished PDF and HTML to `<data_dir>/CURRENT-RESUME.pdf` and `.html`, and
+add a row to the archive ledger at `04_deliverable/output/index.md`. Copies rather than
+symlinks, so the file survives being emailed or moved. A build that has been sent is frozen:
+it is the record of what that company actually received, and it is the only way to answer
+"what did I tell them?" later. A newer finalized build becomes current; the old one keeps its
+folder and its row, so archiving is just no longer being the newest row. Skill and generated
+contract changed in the same commit, per the parity rule.
+Files: skills/resume-build/SKILL.md, skills/resume-kit-init/scripts/init.sh, CHANGELOG.md.
+
 ## 2026-08-17 16:05 - A person's field conventions can now shape output (8c45db0)
 resume-build could only rank skills by tag relevance and confidence, so it rendered a flat
 comma-separated list of tool names. That is the weakest version of the section, and in some
