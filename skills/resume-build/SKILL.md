@@ -180,7 +180,22 @@ One question. Then get on with the task.
 7. **Verify.** Confirm the PDF exists and is a single reasonable page count
    (1-2 pages). If `pdftoppm` is available, spot-check by rendering to PNG
    and reading it: confirm nothing overflows or looks cramped.
-8. **Report to the user**: which experiences and achievements were selected
+8. **Promote it, and log it.** Copy the finished PDF and HTML to
+   `<data_dir>/CURRENT-RESUME.pdf` and `<data_dir>/CURRENT-RESUME.html`.
+   That pair is always the newest finalized resume, so anyone who just needs
+   "the resume" takes it without reading the archive. Copies, not symlinks,
+   so they survive being emailed or moved. Then add a row to
+   `<data_dir>/04_deliverable/output/index.md`: date, what it was built for,
+   folder, status.
+   - **A build that has been sent is frozen.** Never edit, re-render, or
+     overwrite a dated folder afterwards. It is the record of what that
+     company actually received, and the only way to answer "what did I tell
+     them?" later.
+   - A newer finalized build becomes current. The previous one keeps its
+     folder and its row; being archived just means no longer being newest.
+   - Only the person overrides this. Do not unfreeze a sent resume, and do
+     not overwrite `CURRENT-RESUME.pdf` with an unfinished draft.
+9. **Report to the user**: which experiences and achievements were selected
    and why, any gap between what the posting wants and what's in the
    database (don't paper over this, it's useful signal for what to add next
    time), and the output path. If a gap looks like something the person

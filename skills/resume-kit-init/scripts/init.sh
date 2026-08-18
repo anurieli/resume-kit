@@ -581,9 +581,20 @@ apply, with a reason and a list of what would change it, is an answer.
    drives headless Chrome, so a surface without a shell stops after
    `resume.html` and reports the PDF as pending. Verify the result runs 1 to
    2 pages with nothing overflowing.
+10. **Promote it, and log it.** Copy the finished PDF and HTML to
+    `../CURRENT-RESUME.pdf` and `../CURRENT-RESUME.html` at the workspace
+    root, and add a row to `output/index.md` naming the date and what it was
+    built for. `CURRENT-RESUME.pdf` is what anyone takes when they just need
+    "the resume". A build that has been sent is frozen: never edit,
+    re-render, or overwrite a dated folder after the fact, because it is the
+    record of what that company actually received. A newer build becomes
+    current; the old one keeps its folder and its row. Only the user
+    overrides this.
 
 ## Outputs
 - `positioning.md`, `resume.html`, `resume.pdf` -> `output/<YYYY-MM-DD>-<slug>/`
+- a copy of the finished resume -> `../CURRENT-RESUME.pdf` and `.html`
+- a row in `output/index.md`
 
 ## Checkpoints
 - Read `positioning.md` before sending anything. The gap list is the part
