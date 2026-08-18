@@ -581,7 +581,14 @@ apply, with a reason and a list of what would change it, is an answer.
    drives headless Chrome, so a surface without a shell stops after
    `resume.html` and reports the PDF as pending. Verify the result runs 1 to
    2 pages with nothing overflowing.
-10. **Promote it, and log it.** Copy the finished PDF and HTML to
+10. **Build the submission kit.** In the dated folder, write
+    `SUBMISSION-KIT.md` plus a `submission/` subfolder holding the
+    send-ready file named as the employer will see it,
+    `<Name> - Resume.pdf`. The working `resume.html` and `resume.pdf` stay
+    in the dated folder. `SUBMISSION-KIT.md` covers what to send, what is
+    here for you rather than the employer, how the resume was angled, the
+    known risk, and what to do once it is sent.
+11. **Promote it, and log it.** Copy the finished PDF and HTML to
     `../CURRENT-RESUME.pdf` and `../CURRENT-RESUME.html` at the workspace
     root, and add a row to `output/index.md` naming the date and what it was
     built for. `CURRENT-RESUME.pdf` is what anyone takes when they just need
@@ -589,11 +596,15 @@ apply, with a reason and a list of what would change it, is an answer.
     re-render, or overwrite a dated folder after the fact, because it is the
     record of what that company actually received. A newer build becomes
     current; the old one keeps its folder and its row. Only the user
-    overrides this.
+    overrides this. Every resume here is tailored to one posting, so the
+    current one is not a general resume: keep `../CURRENT-RESUME.md`
+    accurate about what it was built for.
 
 ## Outputs
 - `positioning.md`, `resume.html`, `resume.pdf` -> `output/<YYYY-MM-DD>-<slug>/`
+- `SUBMISSION-KIT.md` and `submission/<Name> - Resume.pdf` -> the dated folder
 - a copy of the finished resume -> `../CURRENT-RESUME.pdf` and `.html`
+- `../CURRENT-RESUME.md` updated with what it was built for
 - a row in `output/index.md`
 
 ## Checkpoints

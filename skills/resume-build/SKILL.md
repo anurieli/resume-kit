@@ -180,7 +180,17 @@ One question. Then get on with the task.
 7. **Verify.** Confirm the PDF exists and is a single reasonable page count
    (1-2 pages). If `pdftoppm` is available, spot-check by rendering to PNG
    and reading it: confirm nothing overflows or looks cramped.
-8. **Promote it, and log it.** Copy the finished PDF and HTML to
+8. **Build the submission kit.** In the dated folder, write
+   `SUBMISSION-KIT.md` and a `submission/` subfolder:
+   - `submission/` holds the send-ready file, named as the employer will see
+     it: `<Person Name> - Resume.pdf`. The working `resume.html` and
+     `resume.pdf` stay in the dated folder. One folder to open when it is
+     time to actually apply.
+   - `SUBMISSION-KIT.md` covers: what to send, what is here for the person
+     rather than the employer (positioning, posting, brief, with links), how
+     the resume was angled for this posting, the known risk a screener will
+     hit, and what to do once it is sent.
+9. **Promote it, and log it.** Copy the finished PDF and HTML to
    `<data_dir>/CURRENT-RESUME.pdf` and `<data_dir>/CURRENT-RESUME.html`.
    That pair is always the newest finalized resume, so anyone who just needs
    "the resume" takes it without reading the archive. Copies, not symlinks,
@@ -195,7 +205,7 @@ One question. Then get on with the task.
      folder and its row; being archived just means no longer being newest.
    - Only the person overrides this. Do not unfreeze a sent resume, and do
      not overwrite `CURRENT-RESUME.pdf` with an unfinished draft.
-9. **Report to the user**: which experiences and achievements were selected
+10. **Report to the user**: which experiences and achievements were selected
    and why, any gap between what the posting wants and what's in the
    database (don't paper over this, it's useful signal for what to add next
    time), and the output path. If a gap looks like something the person

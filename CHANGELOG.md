@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-18 14:52 - Each application gets a submission kit, and current is never general (pending)
+CURRENT-RESUME.pdf sat at the workspace root looking like a general-purpose resume, but every
+resume this tool builds is tailored to one posting: the current one led with a lending
+engagement and named AWS Bedrock because a bank asked for it, and sending that to a robotics
+startup would read narrow. Two fixes. Each application now gets a submission kit in its dated
+folder: SUBMISSION-KIT.md covering what to send, what is there for the person rather than the
+employer, how the resume was angled, the known risk, and what to do once sent, plus a
+submission/ subfolder holding the send-ready file named as the employer sees it. And
+CURRENT-RESUME.md now records what the current resume was built for, so nobody reuses a
+tailored one blind. Building a genuinely general resume is named as an open gap rather than
+faked by reusing whichever tailored build happens to be newest.
+Files: skills/resume-build/SKILL.md, skills/resume-kit-init/scripts/init.sh, CHANGELOG.md.
+
 ## 2026-08-18 14:32 - Sent resumes are frozen, the newest one is CURRENT-RESUME (8fb7145)
 Every build landed in a dated folder and stopped there, so "give me my resume" meant knowing
 which folder was newest, and nothing stopped an agent from re-rendering a resume that had
