@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-08-18 15:20 - Read the application form, not just the posting (7770ddf)
+The first real application exposed a hole in the workflow: the ONE ZERO posting asked for a
+resume, and the actual form asked for five mandatory free-text essays about one use case in
+depth, plus salary. The essays are where the application is judged, and the tool had no step
+that even looked at the form. resume-build now reads the live apply page and writes
+APPLICATION-ANSWERS.md into the dated folder: every field captured verbatim, filled from
+career.yaml, and where the record runs out it stops and says so rather than writing something
+plausible. That last part matters more than the rest, because a fabricated answer survives the
+screen and dies in the interview. Two more additions in the same pass. Cover letters are now a
+first-class output, with templates/cover-letter-template.html and a .letter block in theme.css
+so the letter and the resume read as one set of documents. And the general resume is now a real
+build with no employer attached: its own dated folder, its own GENERAL-RESUME.pdf at the
+workspace root, its own ledger row, never overwritten by a tailored build. Before this, the only
+resume anyone could grab was whichever tailored one happened to be newest. Also removed the
+per-application submission/ subfolder, since the dated folder is the kit, and fixed two stale
+~/Desktop/resume-kit paths left over from the repo move.
+Files: skills/resume-build/SKILL.md, skills/resume-kit-init/SKILL.md,
+skills/resume-kit-init/scripts/init.sh, templates/theme.css, templates/cover-letter-template.html.
+
 ## 2026-08-18 14:52 - Each application gets a submission kit, and current is never general (3cbbd2f)
 CURRENT-RESUME.pdf sat at the workspace root looking like a general-purpose resume, but every
 resume this tool builds is tailored to one posting: the current one led with a lending
