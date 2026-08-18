@@ -1,6 +1,6 @@
 # Changelog
 
-## 2026-08-18 14:52 - Each application gets a submission kit, and current is never general (pending)
+## 2026-08-18 14:52 - Each application gets a submission kit, and current is never general (3cbbd2f)
 CURRENT-RESUME.pdf sat at the workspace root looking like a general-purpose resume, but every
 resume this tool builds is tailored to one posting: the current one led with a lending
 engagement and named AWS Bedrock because a bank asked for it, and sending that to a robotics
