@@ -112,7 +112,7 @@ _config/                 Layer 3: schema rules, interview bank, theme.css,
   career.yaml            the structured spine.
   self/reflections/      long-form rambles, referenced from career.yaml.
   output/                ingest and enrich reports.
-03_target/output/<slug>/ posting.md, brief.md.
+03_target/output/<slug>/ posting.md, company.md, brief.md.
 04_deliverable/output/<YYYY-MM-DD>-<slug>/
                          positioning.md, resume.html, resume.pdf.
 ```
@@ -199,7 +199,7 @@ one view of it.
 |---|---|---|---|
 | Old resumes, LinkedIn export, performance reviews, offer letters | `01_intake/` | `career-ingest` | files consumed into `01_intake/output/processed/` |
 | Documents just consumed, or something to say about a job | `02_career-db/` | `career-ingest`, `career-enrich` | updated `career.yaml`, reflections, a run report |
-| A job posting, and the question of whether to apply | `03_target/` | `career-target` | `output/<slug>/posting.md` and `brief.md` |
+| A job posting, and the question of whether to apply | `03_target/` | `career-target` | `output/<slug>/posting.md`, `company.md`, and `brief.md` |
 | A captured target plus a filled `career.yaml` | `04_deliverable/` | `career-target`, `resume-build` | `output/<YYYY-MM-DD>-<slug>/`: `positioning.md`, the resume, a cover letter, `APPLICATION-ANSWERS.md`, `SUBMISSION-KIT.md` |
 
 Two activation paths, same contracts:
@@ -506,7 +506,20 @@ records what the job wants. Deciding what to say about it happens in
    given one. Do not summarize or trim here. The raw text is the record, and
    postings get taken down within weeks. If a fetch came back partial or
    paywalled, say so and ask for the pasted text.
-3. Write `output/<slug>/brief.md` with these sections and nothing else:
+3. Research the company in a SUBAGENT and write `output/<slug>/company.md`.
+   Wide, link-following work whose intermediate reading should not land in
+   the main context. It answers: what the company does and how it makes
+   money; stage and size; stated values and vision, quoted, with the page
+   each quote came from; three to five verbatim phrases showing how they
+   talk; what has happened there in the last twelve months; what this role
+   exists to do read against that situation; and open questions only the
+   human can answer. Every claim carries a source URL, the date read, and a
+   marker: `stated` (their words), `reported` (third party), `inferred`
+   (your reading, from named evidence). No source, no claim. Research the
+   company, never the people. End with a short "not established" list.
+   Skip this step if the company cannot be identified, rather than
+   researching the wrong one.
+4. Write `output/<slug>/brief.md` with these sections and nothing else:
    - **Target title**
    - **Company**
    - **Emphasized skills and technologies**, as a list, in the posting's own
@@ -516,22 +529,27 @@ records what the job wants. Deciding what to say about it happens in
      reports to, whether it names leading or mentoring
    Note which requirements the posting repeats or lists first. Repetition is
    the clearest signal a posting gives about what it screens for.
-4. Keep `brief.md` to the posting's own claims. Do not infer what the company
-   "really wants" and do not import outside knowledge of it. Comparison
-   against `career.yaml` happens in `04_deliverable`.
-5. Past briefs in `output/*/brief.md` are the pattern-detection input for
+5. Keep `brief.md` to the posting's own claims. Do not infer what the company
+   "really wants" and do not import outside knowledge of it: that goes in
+   `company.md`, sourced. Keeping them apart is what lets a reader tell what
+   the posting said from what the internet said. Comparison against
+   `career.yaml` happens in `04_deliverable`.
+6. Past briefs in `output/*/brief.md` are the pattern-detection input for
    `career-target`. Leave them in place; they are why a recurring gap can be
    named as a ceiling rather than a one-off.
-6. If the posting arrived as a file dropped in this folder, move it into
+7. If the posting arrived as a file dropped in this folder, move it into
    `output/<slug>/` once captured.
 
 ## Outputs
-- `posting.md`, `brief.md` -> `output/<slug>/`
+- `posting.md`, `company.md`, `brief.md` -> `output/<slug>/`
 
 ## Checkpoints
 - Read `brief.md` before running `04_deliverable`. It is the tailoring
   instruction: a wrong target title or a missed skill propagates straight
   into the positioning and the resume.
+- Read the open questions at the end of `company.md` and put them to the
+  person. They are the part the research cannot settle and the reason it is
+  worth doing.
 EOF
 
 write_if_absent "$DATA_DIR/04_deliverable/CONTEXT.md" <<'EOF'

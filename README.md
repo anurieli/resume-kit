@@ -5,9 +5,9 @@ for you.**
 
 Drop in a link to a job you are considering. It goes through everything you
 have ever done, pulls out the parts that actually matter for that role,
-assembles them into a resume aimed at it, writes a cover letter that reads
-like you on your best day, and hands you a list of things you could go do to
-make yourself a stronger candidate.
+assembles them into a resume aimed at it, researches the company so the cover
+letter is written for them rather than at them, and hands you a list of
+things you could go do to make yourself a stronger candidate.
 
 Then it tells you, honestly, whether you should apply at all. Sometimes the
 answer is no.
@@ -80,9 +80,19 @@ this every couple of months, not all at once. This is the step that makes the
 whole thing worth having.
 
 **"Here's a job I'm looking at. Should I apply?"** Give it the link, or paste
-the posting. You get back how you read to a screener, what to lead with, what
-is honestly missing, what you could do about it, and a straight answer.
-Sometimes the answer is no.
+the posting. Before it answers, it sends a researcher off to read up on the
+company: what they actually do, how they make money, what they say they
+value, how they talk, and what has happened there lately. Every fact it
+brings back carries the link it came from.
+
+Then you get how you read to a screener, what to lead with, what is honestly
+missing, what you could do about it, and a straight answer. Sometimes the
+answer is no.
+
+It also asks you a few things it cannot look up. Whether you know anybody
+there. Whether the way they say they work is a way you want to work. Whether
+a value they list is one you could speak to honestly. Those answers make the
+cover letter, and they get filed, so the next application inherits them.
 
 **"Build it."** You get a resume, and a cover letter if the application takes
 one, written for that specific job, as a PDF, in a dated folder with the

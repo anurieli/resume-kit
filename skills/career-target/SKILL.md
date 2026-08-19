@@ -67,20 +67,67 @@ One question. Then get on with the task.
    - Write the posting verbatim to
      `<data_dir>/03_target/output/<slug>/posting.md`. Do not summarize at
      this step. Postings get taken down within weeks and the raw text is the
-     record, both for this session and for the pattern detection in step 4.
+     record, both for this session and for the pattern detection in step 5.
    - If a fetched page came back partial or paywalled, say so and ask the
      user to paste the text rather than working from a fragment.
-2. **Write the brief** to `<data_dir>/03_target/output/<slug>/brief.md`:
+2. **Research the company, in a subagent.** As soon as the posting is
+   captured, dispatch a separate agent to research the company and write
+   `<data_dir>/03_target/output/<slug>/company.md`. Do it in a subagent
+   because it is a wide, link-following job whose intermediate reading has no
+   business in this context: what comes back is the file.
+
+   Brief the subagent to answer these, and nothing else:
+   - **What the company actually does**, in one paragraph, in plain terms.
+     What they sell, to whom, and how they make money.
+   - **Stage and size**: funding, headcount, ownership, public or private,
+     how old.
+   - **Stated values and vision**, quoted from their own material, with the
+     page each quote came from. Their careers page, about page, engineering
+     blog, founder letters, and the posting itself.
+   - **How they talk.** Three to five short verbatim phrases that show their
+     register. This is what makes a cover letter sound like it was written
+     for them rather than at them.
+   - **What is going on right now.** Recent launches, funding, layoffs,
+     pivots, regulatory news, anything in the last twelve months that a
+     candidate would be expected to know about.
+   - **What this role exists to do**, read against the company's situation
+     rather than the posting's wording. A hire made after a funding round is
+     a different job than the same title backfilled after attrition.
+   - **Open questions for the human**, which is the most useful section.
+     Things the research cannot settle that the person can: whether they know
+     anybody there, whether the company's stated way of working matches how
+     they want to work, whether a named value is one they can speak to
+     honestly.
+
+   Three rules the subagent must follow:
+   - **Every claim carries a source URL and the date it was read.** Mark each
+     one `stated` (the company's own words), `reported` (a third party), or
+     `inferred` (your reading, from named evidence). An unsourced claim does
+     not go in the file. This mirrors the `evidence_type` discipline on the
+     career side, and for the same reason: the person will repeat these
+     things out loud in a room.
+   - **Research the company, not the people.** Public company material,
+     product, press, and engineering writing. Do not compile profiles of
+     employees, hiring managers, or interviewers, and do not go looking
+     through anyone's personal accounts.
+   - **Say what could not be found.** A short "not established" list at the
+     end beats a confident file with quiet holes in it.
+
+   If the company cannot be identified from the posting, say so and skip
+   this step rather than researching the wrong company.
+3. **Write the brief** to `<data_dir>/03_target/output/<slug>/brief.md`:
    target title, company, emphasized skills and technologies, key
    responsibilities, seniority signals (years asked for, scope of ownership,
    who the role reports to, whether it names leading or mentoring). Stick to
    the posting's own claims. Do not infer what the company "really wants",
-   and do not import what you know about the company from elsewhere. Note
+   and do not import outside knowledge of the company here: that belongs in
+   `company.md`, sourced. The two files stay separate so a reader can always
+   tell what the posting said from what the internet said. Note
    which requirements the posting repeats or lists first, since repetition
    is the clearest signal a posting gives about what it actually screens
    for. If `brief.md` already exists for this slug from a `resume-build`
    run, update it rather than replacing it, and keep the same structure.
-3. **Check the record is strong enough to position from.** Before writing
+4. **Check the record is strong enough to position from.** Before writing
    anything in stage 04, judge whether `career.yaml` can support real
    advice for this posting. It cannot when the relevant experiences carry no
    metrics and no context, when `self_assessment` is empty, or when the only
@@ -91,7 +138,7 @@ One question. Then get on with the task.
    thin positioning document and hope it reads as insight. A confident
    analysis of an empty record is worse than no analysis, because the person
    will act on it.
-4. **Detect cross-application patterns.** Read every past brief at
+5. **Detect cross-application patterns.** Read every past brief at
    `<data_dir>/03_target/output/*/brief.md`, excluding this one.
    - With **three or more** past targets, look for requirements that appear
      across multiple briefs and are absent from `career.yaml`. When one
@@ -107,9 +154,13 @@ One question. Then get on with the task.
    - Only count a requirement as a gap here if `career.yaml` genuinely does
      not cover it. Check tags, achievements, and reflections before
      concluding something is missing.
-5. **Write positioning** to
+6. **Write positioning** to
    `<data_dir>/04_deliverable/output/<YYYY-MM-DD>-<slug>/positioning.md`,
-   with these five sections in this order:
+   with these five sections in this order. Read `company.md` before you
+   start: it changes the angle, the environment read, and sometimes the
+   recommendation. A company that just raised and is building a new team
+   wants a different story than one consolidating after layoffs, and the
+   posting will not tell you which one you are looking at.
    1. **How you read for this role.** The honest angle. What story does
       this record tell a screener looking at it through this posting? Lead
       with the strongest genuine asset for this specific job, which is
@@ -142,7 +193,7 @@ One question. Then get on with the task.
       writing a public response, or reproducing a specific result. For a
       management role it might be a written artifact about a team decision
       already made. Say which tips are worth doing before this application
-      and which are longer plays for the pattern in step 4. Never write
+      and which are longer plays for the pattern in step 5. Never write
       generic advice like "learn Kubernetes" or "build your network"; if
       you cannot name the specific thing to do, say the gap cannot be
       closed quickly and treat it as an input to the recommendation.
@@ -150,9 +201,9 @@ One question. Then get on with the task.
       conditions, or probably not. When it is probably not, say what would
       change it and roughly how long that takes. When it is yes, say what
       the application has to do well to survive a screen. Weigh the pattern
-      from step 4 here: a gap that has blocked four applications is a
+      from step 5 here: a gap that has blocked four applications is a
       different decision than one that turned up today.
-6. **Use `self_assessment` to shape, never to assert.** What the person
+7. **Use `self_assessment` to shape, never to assert.** What the person
    says they are good at should influence which achievements you lead with,
    how you describe the fit, and which environments you flag as a mismatch.
    It never appears in the document as a claim about them. Write "your
@@ -161,10 +212,20 @@ One question. Then get on with the task.
    because they said so. `self_assessment.working_on` and `prefers` are
    inputs to the gap list and the recommendation: a role that is a skill
    fit and an environment mismatch should say that out loud.
-7. **Report to the user in a few lines**: the angle, the top one or two
+8. **Report to the user in a few lines**: the angle, the top one or two
    gaps, any cross-target pattern, the recommendation, and the paths to
-   `brief.md` and `positioning.md`. Then say whether the next step is
-   `resume-build`, `career-enrich`, or nothing.
+   `company.md`, `brief.md`, and `positioning.md`. Then say whether the
+   next step is `resume-build`, `career-enrich`, or nothing.
+9. **Ask the open questions from `company.md`.** They are the reason the
+   research is worth doing. The file can establish what a company says it
+   values; only the person can say whether they believe it, whether they
+   have a story that speaks to it, or whether the way this company works
+   is a way they want to work. Ask them, batched, at the end. File the
+   answers the way any other material gets filed: concrete events as
+   `self-reported` in `career.yaml`, opinions about themselves as
+   `self-assessment`, anything longer as a reflection. A company fact
+   they confirm or contradict goes back into `company.md`, marked as
+   theirs.
 
 ## Don't
 
@@ -185,5 +246,14 @@ One question. Then get on with the task.
   yes carries no information, and the person will stop reading it.
 - Don't summarize the posting in `posting.md`. That file is the verbatim
   record; analysis belongs in `brief.md` and `positioning.md`.
+- Don't put a company claim in any document without a source and a date.
+  A candidate repeating an unsourced fact about a company in an interview
+  is the same failure as an inflated bullet, and it lands in the same room.
+- Don't research people. The company, its product, its press, and its own
+  writing. Not employees, not the hiring manager, not whoever is running
+  the interview loop.
+- Don't let the research flatter the application. If what comes back makes
+  the role look like a worse fit, that belongs in the recommendation.
+  Research that only ever strengthens the case is not research.
 - Don't build a resume here. If the person wants the document, hand off to
   `resume-build`, which reads the same slug and brief.

@@ -210,6 +210,26 @@ One question. Then get on with the task.
    rather than a humble-brag. This is a per-person preference recorded in
    `<data_dir>/_config/cover-letter-template.html`; don't assume it for a
    workspace that hasn't set it.
+
+   **Read `<data_dir>/03_target/output/<slug>/company.md` before writing it.**
+   This is the file that separates a letter written *for* a company from one
+   written *at* one. Use it three ways:
+   - **Their vocabulary, not yours.** The research captured how they talk.
+     Write in that register rather than in generic application English.
+   - **One specific, sourced, true thing about them**, early, that shows the
+     letter was written after actually looking at them. Their situation, a
+     shipped product, a stated value the person can honestly speak to.
+   - **The role read against their situation.** A hire after a raise and a
+     backfill after attrition are different jobs with the same title, and the
+     letter should sound like it knows which one this is.
+
+   Two limits. Only `stated` and `reported` claims may be asserted in the
+   letter; an `inferred` reading may shape emphasis but is never written as a
+   fact about the company. And never flatter: a paragraph admiring the company
+   that any candidate could have written is worse than no paragraph, because
+   it reads as filler in a letter whose whole credibility is that it is
+   specific. If `company.md` does not exist, say so and write the letter
+   without it rather than inventing what the company cares about.
 10. **Build the submission kit.** The dated folder **is** the kit. There is
    no `submission/` subfolder.
    - Name the send-ready PDFs as the employer sees them:

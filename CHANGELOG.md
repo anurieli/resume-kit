@@ -1,5 +1,38 @@
 # Changelog
 
+## 2026-08-19 11:30 - Company research, in a subagent, before anything gets written
+An application was being built out of one side of the conversation. The record knew the person
+and the brief knew the posting, and nothing in the pipeline knew the company, so a cover letter
+could only ever be written at an employer rather than for one. career-target now dispatches a
+subagent as soon as the posting is captured, and it writes company.md alongside posting.md and
+brief.md: what the company does and how it makes money, stage and size, stated values and vision
+quoted with the page each quote came from, three to five verbatim phrases showing how they talk,
+what has happened there in the last twelve months, what the role exists to do read against that
+situation, and the open questions only the human can answer.
+
+It runs in a subagent on purpose. Link-following research is wide and its intermediate reading
+has no business in the main context; what comes back is the file.
+
+The integrity model extends to it rather than being reinvented. Every claim carries a source URL,
+the date it was read, and a marker: stated (their words), reported (third party), inferred (a
+reading, from named evidence). No source, no claim, for the same reason the career side works
+that way: the person repeats these things out loud in a room. Only stated and reported may be
+asserted in a cover letter; inferred shapes emphasis and is never written as fact. Two hard
+limits: research the company, never the people, so no profiles of employees, hiring managers, or
+interviewers; and research that only ever strengthens the case is not research, so a finding that
+makes the role look like a worse fit belongs in the recommendation.
+
+brief.md stays exactly what it was, the posting's own claims and nothing else, so a reader can
+always tell what the posting said from what the internet said. resume-build reads company.md
+before writing the cover letter and uses it three ways: their register instead of generic
+application English, one specific sourced true thing early, and the role read against their
+actual situation, since a hire after a raise and a backfill after attrition are different jobs
+with the same title. Flattery any candidate could have written is explicitly worse than nothing.
+The last step of career-target is now putting the open questions to the person and filing the
+answers, so the next application inherits them.
+Files: skills/career-target/SKILL.md, skills/resume-build/SKILL.md,
+skills/resume-kit-init/scripts/init.sh, README.md, CHANGELOG.md.
+
 ## 2026-08-19 10:40 - The one-liner: a career kit, not a resume generator (b9be593)
 The README opened on the problem and made the reader wait to find out what the thing does.
 Flipped: it now opens with what it is and what happens when you use it. A career kit, an AI that
