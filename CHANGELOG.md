@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-19 10:40 - The one-liner: a career kit, not a resume generator (b9be593)
+The README opened on the problem and made the reader wait to find out what the thing does.
+Flipped: it now opens with what it is and what happens when you use it. A career kit, an AI that
+remembers your career and handles your applications, where you drop in a link to a job and get
+back a resume aimed at it, a cover letter, and a list of what would make you a stronger
+candidate. The growing-record-shrinking-resume argument still runs, one section down, as the why
+rather than the lede. Repo description on GitHub updated to match. One word of Ariel's framing
+was not used verbatim: "a cover letter more convincing than anything you've ever seen" became "a
+cover letter that reads like you on your best day", because a hype claim in the first paragraph
+undercuts a tool whose entire pitch is that it refuses to oversell you. Also confirmed against
+career-target that a URL is accepted, not only pasted text, before promising it in the lede.
+Files: README.md, CHANGELOG.md.
+
 ## 2026-08-19 09:55 - README rewritten for people who do not code
 The README explained the tool to someone who already understood the problem, and opened on
 mechanics. Rewritten to open on the actual argument instead: your career keeps growing and your

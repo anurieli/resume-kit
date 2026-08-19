@@ -1,6 +1,21 @@
 # resume-kit
 
-**Your career keeps growing. Your resume keeps shrinking.**
+**A career kit. An AI that remembers your career and handles your applications
+for you.**
+
+Drop in a link to a job you are considering. It goes through everything you
+have ever done, pulls out the parts that actually matter for that role,
+assembles them into a resume aimed at it, writes a cover letter that reads
+like you on your best day, and hands you a list of things you could go do to
+make yourself a stronger candidate.
+
+Then it tells you, honestly, whether you should apply at all. Sometimes the
+answer is no.
+
+---
+
+**Why it works this way: your career keeps growing and your resume keeps
+shrinking.**
 
 Every year you pick up skills, finish projects, fix things nobody else wanted
 to touch, build something on the side. All of it is you. None of it is written
@@ -12,12 +27,9 @@ So the pile grows and the document shrinks, and you end up staring at last
 year's resume trying to remember what the most important thing about you is
 supposed to be.
 
-This fixes the order. You keep the record. The record keeps growing. When a
-job comes up, a resume and a cover letter get written out of it in about a
-minute, aimed at that specific job, and you never rewrite anything by hand
-again.
-
-It also tells you, honestly, whether you should bother applying.
+This fixes the order. You keep the record, and the record keeps growing. The
+resume is generated out of it in about a minute, aimed at one job, and you
+never rewrite anything by hand again.
 
 Runs inside Claude Code, or any AI assistant that can read a folder. You do
 not need to know how to code.
@@ -67,9 +79,10 @@ you a few questions. Ten honest minutes beats an hour of filling in forms. Do
 this every couple of months, not all at once. This is the step that makes the
 whole thing worth having.
 
-**"Here's a job I'm looking at. Should I apply?"** Paste the posting. You get
-back how you read to a screener, what to lead with, what is honestly missing,
-what you could do about it, and a straight answer. Sometimes the answer is no.
+**"Here's a job I'm looking at. Should I apply?"** Give it the link, or paste
+the posting. You get back how you read to a screener, what to lead with, what
+is honestly missing, what you could do about it, and a straight answer.
+Sometimes the answer is no.
 
 **"Build it."** You get a resume, and a cover letter if the application takes
 one, written for that specific job, as a PDF, in a dated folder with the
