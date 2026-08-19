@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-08-19 09:55 - README rewritten for people who do not code
+The README explained the tool to someone who already understood the problem, and opened on
+mechanics. Rewritten to open on the actual argument instead: your career keeps growing and your
+resume keeps shrinking, because the only place most people write their history down is a
+document they trim to fit each new job. Keep the record, generate the pitch, stop staring at
+last year's resume trying to remember what matters about you.
+
+The change that matters for distribution is the setup block. Anybody can now copy one prompt,
+paste it into Claude Code, and have the whole thing installed and scaffolded without touching a
+terminal: clone, symlink the skills, pick a private data directory, run init.sh, explain what
+happened in plain language. Verified end to end by scaffolding into a throwaway directory
+(config backed up and restored first, per CLAUDE.md): 15 files created, workspace intact,
+config written correctly. Below that, four things to say in your own words rather than a
+command reference, and the evidence rule stated as what the tool refuses to do rather than as a
+schema. The walkthrough and examples table from yesterday stay where they were.
+Files: README.md, CHANGELOG.md.
+
 ## 2026-08-18 22:10 - Public on GitHub, with a walkthrough README (41eeea4)
 Pushed to https://github.com/anurieli/resume-kit under MIT, public, 23 files, no private data:
 the career record and every generated resume live in a separate data directory that this repo

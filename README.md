@@ -1,88 +1,114 @@
 # resume-kit
 
-**Stop rebuilding your resume from scratch every time you apply somewhere.**
+**Your career keeps growing. Your resume keeps shrinking.**
 
-This is a folder that remembers your career. You feed it the resumes you
-already have, it asks you questions over time, and when a job comes up it
-writes you a tailored resume in about a minute. It also tells you, honestly,
-whether you should bother applying.
+Every year you pick up skills, finish projects, fix things nobody else wanted
+to touch, build something on the side. All of it is you. None of it is written
+down anywhere except in one document you rewrite from scratch every time you
+apply somewhere, by opening the last version and cutting whatever does not fit
+the new job.
 
-Runs inside Claude Code, or any AI assistant that can read a folder.
+So the pile grows and the document shrinks, and you end up staring at last
+year's resume trying to remember what the most important thing about you is
+supposed to be.
 
----
+This fixes the order. You keep the record. The record keeps growing. When a
+job comes up, a resume and a cover letter get written out of it in about a
+minute, aimed at that specific job, and you never rewrite anything by hand
+again.
 
-## What it does for you
+It also tells you, honestly, whether you should bother applying.
 
-**It remembers, so you don't have to.** Most people rebuild their history
-from whatever old resume they can find, which makes every version a copy of a
-copy. Here your history lives in one file that only gets more complete. The
-resume is generated from it, so the resume is never the thing you maintain.
-
-**It asks you good questions.** What makes a resume land is almost never
-written down anywhere: the scope of what you owned, the number you moved, the
-thing you started that nobody asked you to start. So it interviews you, a few
-questions at a time, and files what you say. You can also just talk at it
-about a job and let it sort out what matters.
-
-**It won't lie for you.** Every fact it stores is tagged with where it came
-from: a document, something you told it, or your own opinion of yourself.
-Your opinions shape how things get worded, but they never get printed as
-though they were verified facts. If a job wants something you don't have, it
-says so instead of quietly inflating a bullet.
-
-**It tells you where you stand.** Paste a posting and you get a read on how
-you'd look to a screener, which experience to lead with, what's missing,
-specific things you could do about it, and a straight answer on whether to
-apply. Sometimes the answer is no.
-
-**It notices patterns you can't.** It keeps every posting you've pointed it
-at. After a handful of applications it can tell you something like "four of
-your last five targets wanted Kubernetes, that's not a one-off gap, that's
-your ceiling." No single application shows you that.
-
-**It checks in on you.** If it's been a couple of months, it asks what you've
-been up to before doing anything else, and files the answer. That's what
-keeps the record from quietly going stale while you're busy actually working.
-
-**Every resume looks the same.** Same fonts, spacing, and layout, every time.
-Only the content changes. The format is one CSS file you can edit, so if you
-want a different look, change it once and everything after follows.
+Runs inside Claude Code, or any AI assistant that can read a folder. You do
+not need to know how to code.
 
 ---
 
-## Getting set up
+## Start here: copy this and give it to Claude
 
-1. Clone this repo somewhere.
-2. Point your AI assistant's skills at the folders under `skills/`.
-3. Say "set up resume-kit." It asks where your private career data should
-   live and builds the folder.
+Open Claude Code and paste this in. That is the whole setup.
 
-**Your data never lives in this repo.** This repo is the tool and it's meant
-to be public. Your history goes in a separate folder you pick: a private
-notes vault, a private repo, anywhere. Fork this and publish it and nothing
-personal comes along.
+```
+I want to set up resume-kit, a tool that keeps a record of my career and
+writes tailored resumes from it. Please do this end to end and ask me
+whenever you need a decision from me.
 
----
+1. Clone https://github.com/anurieli/resume-kit into ~/code/resume-kit.
+   Create the folder if it does not exist.
+2. Make its skills available to you: create ~/.claude/skills/ if it does not
+   exist, then symlink each folder inside ~/code/resume-kit/skills/ into it.
+3. Ask me where my private career record should live. If I have no
+   preference, suggest ~/resume-kit-data. It must NOT be inside the cloned
+   repo, because that repo is public and my record is not.
+4. Run: ~/code/resume-kit/skills/resume-kit-init/scripts/init.sh "<the
+   folder I picked>"
+5. Tell me in plain language what was created and where, then ask me whether
+   I have any old resumes, performance reviews, or a LinkedIn export lying
+   around, and tell me what to do next based on my answer.
 
-## Using it
+Then stop and wait for me.
+```
 
-**First, feed it what you have.** Drop old resumes, your LinkedIn data
-export, cover letters, and especially old performance reviews into
-`01_intake/`. Any format. Then say "ingest these." Performance reviews are
-the most valuable thing in that list, because they're full of numbers you've
-forgotten you earned.
+That is it. Nothing to install, nothing to configure, no account.
 
-It dedupes the same job showing up across three old resumes, tells you which
-files it skipped and why, and never deletes an original.
+## Then just talk to it
 
-**Then talk to it now and then.** Say "interview me." It tells you which
-parts of your record are thin and asks a few questions. Do this occasionally
-rather than all at once. Ten honest minutes beats an hour of form-filling.
+Four things to say, in this order. Say them in your own words, these are not
+commands.
 
-**Then, when a job comes up.** Paste the posting and ask what it thinks. If
-you want the document, say "build the resume." You get a PDF in a dated
-folder with the posting saved next to it, so in three months you'll still
-know exactly what you sent and what they asked for.
+**"Here are my old documents, ingest them."** Put whatever you have into the
+`01_intake` folder first. Old resumes, cover letters, your LinkedIn data
+export, and above all any performance reviews. Reviews are the single most
+valuable thing on that list, because they are full of numbers about you that
+somebody else wrote down and you have since forgotten.
+
+**"Interview me."** It looks at your record, finds the thin parts, and asks
+you a few questions. Ten honest minutes beats an hour of filling in forms. Do
+this every couple of months, not all at once. This is the step that makes the
+whole thing worth having.
+
+**"Here's a job I'm looking at. Should I apply?"** Paste the posting. You get
+back how you read to a screener, what to lead with, what is honestly missing,
+what you could do about it, and a straight answer. Sometimes the answer is no.
+
+**"Build it."** You get a resume, and a cover letter if the application takes
+one, written for that specific job, as a PDF, in a dated folder with the
+posting saved next to it.
+
+## What it will not do
+
+It will not lie for you.
+
+Every fact it stores is tagged with where it came from: a document you gave
+it, something you told it, or your own opinion of yourself. Your opinions
+change what gets chosen and how it gets worded. They never get printed as
+though they were verified facts. If a job wants something you do not have, it
+says so instead of quietly inflating a bullet to cover the hole.
+
+That is not politeness. An inflated bullet survives the screen and then dies
+in the interview, out loud, in front of a person.
+
+## What it notices that you cannot
+
+It keeps every posting you have ever pointed it at. After a handful of
+applications it can tell you something like: four of your last five targets
+wanted the same thing you do not have.
+
+You experience applications one at a time, weeks apart, each ending in
+silence. So every rejection reads as its own small event. Read across them
+instead and a repeated gap stops being a gap and becomes a ceiling, which is
+the only version of that information you can actually act on.
+
+## Your record is yours, and it stays private
+
+**Nothing personal ever goes in this repo.** This repo is the tool, and it is
+public on purpose. Your history goes in a separate folder you pick: a private
+notes vault, a private repo, anywhere. Fork this, publish it, nothing of
+yours comes along.
+
+Every file in your folder is plain text. Open it, read it, correct it by
+hand. Nothing is locked inside a database or an app, and if you put your
+folder under git you get a full history of your own career record.
 
 ---
 
@@ -153,9 +179,6 @@ resume and all of it decides how the resume gets written.
 > Kubernetes came up again. That's four of your last five targets. This is
 > not a one-off gap anymore, it's your ceiling on this class of role.
 
-That last paragraph is the thing you can't do for yourself. It keeps every
-posting you've ever pointed it at and reads across them.
-
 **4. Get the documents.**
 
 > **You:** "Build it."
@@ -189,8 +212,6 @@ this?" "Build me a resume."
 with no memory of any earlier conversation and no skills installed, which is
 why this also works outside Claude Code.
 
----
-
 ## What's in your folder
 
 ```
@@ -203,22 +224,14 @@ why this also works outside Claude Code.
 _config/          the schema, the interview questions, your resume's format
 ```
 
-Every one of those is a plain text file. Open any of it, read it, correct it
-by hand. Nothing is locked inside a database, and if your folder is under
-git, you get a full history of your own career record.
-
 `career.yaml`, your reflections, and your life log are the asset. Everything
 under an `output/` folder can be regenerated and thrown away.
-
----
 
 ## Changing how your resume looks
 
 Edit `_config/theme.css` inside **your** folder, not this repo. Fonts, sizes,
 spacing, margins, colors. Change it once and every future resume follows. The
 copies here are only what a new workspace starts from.
-
----
 
 ## Requirements
 
@@ -227,8 +240,6 @@ copies here are only what a new workspace starts from.
   `wkhtmltopdf`). Without either you still get a print-ready HTML file that
   saves to PDF from your browser in two keystrokes.
 - `pandoc`, only if you want to feed it `.docx` files.
-
----
 
 ## The design, briefly
 
